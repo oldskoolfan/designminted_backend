@@ -1,0 +1,40 @@
+%input
+  height: 40px
+  font: inherit
+  border:
+    style: none
+    radius: 3px
+
+=textbox($w: auto)
+  @extend %input
+  width: $w
+  padding: 0 10px
+  +add-border($color: $border, $radius: 3px)
+
+=textarea($w: auto, $h: 200px)
+  @extend %input
+  width: $w
+  height: $h
+  padding: 10px
+  resize: none
+  +add-border($color: $border, $radius: 3px)
+
+=button($w: auto)
+  @extend %input
+  width: $w
+  background-color: $darkGrayText
+  font:
+    family: Helvetica
+    weight: 300
+  line-height: 20px
+  letter-spacing: 4px
+  color: $white
+  transition: background-color 300ms
+  padding: 5px 20px
+  &:hover
+    background-color: $mainOrange
+
+=select($w: auto)
+  @extend %input
+  width: $w
+  +add-border($color: $border, $radius: 3px)

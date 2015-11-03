@@ -1,0 +1,42 @@
+body
+  font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif
+
+main.new-blog-form
+  width: 60%
+  margin: 2% auto
+  background-color: #f8f8f8
+
+p img
+  width: 250px
+
+section.blog-content
+  margin-top: 30px
+
+.form-row
+  position: relative
+  +clearfix
+  margin: 0 0 30px
+  padding-top: 20px
+
+  label
+    line-height: normal
+  input[type=button]
+    display: block
+    float: left
+  i.fa-close
+    cursor: pointer
+    position: absolute
+    right: 10px
+    top: 0
+
+label
+  line-height: 40px
+  width: 60px
+  float: left
+  margin-right: 10px
+input[type=text]
+  +textbox(350px)
+select
+  +select
+input[type=button],input[type=submit]
+  +button

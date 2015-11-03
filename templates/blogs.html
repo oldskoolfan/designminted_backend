@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Blogs</title>
+    {% load staticfiles %}
+    <link href="{% static "blogwebapi/css/styles.css" %}" rel="stylesheet">
+    <script src="{% static "blogwebapi/js/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "blogwebapi/js/main.js" %}"></script>
+</head>
+<body>
+    <h1>All Blogs</h1>
+    {% if blogs != None %}
+        {% for blog in blogs %}
+            <div class="blog-row">
+                <div>
+                    <h2>{{ blog.blog_title }}</h2>
+
+                    {% for content in blog.contents.all %}
+                        {% if content.content_type.type_name == "TEXT" %}
+                            <p>{{ content.content_text|safe }}</p>
+                        {% else %}
+                            <p><img src="/get-img/{{ content.id }}" alt="image"/></p>
+                        {% endif %}
+                    {%  endfor %}
+                    <a href="/admin/edit-blog/{{ blog.id }}">EDIT</a>
+                    <a href="/admin/delete-blog/{{ blog.id }}">DELETE</a>
+                    <span>{{ blog.pub_date }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <h2>No blogs to show</h2>
+    {% endif %}
+    <a href="/admin/new-blog/">ADD NEW</a>
+</body>
+</html>

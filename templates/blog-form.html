@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    {% load staticfiles %}
+    <link href="{% static "blogwebapi/css/styles.css" %}" rel="stylesheet">
+    <script src="{% static "blogwebapi/js/jquery-2.1.4.min.js" %}"></script>
+    <script src="{% static "blogwebapi/vendor/tinymce/tinymce.min.js" %}"></script>
+{#    <script src="{% static "blogwebapi/vendor/tinymce/jquery.tinymce.min.js" %}"></script>#}
+    <script src="{% static "blogwebapi/js/main.js" %}"></script>
+</head>
+<body>
+    <main class="new-blog-form">
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Blog</legend>
+            <label for="title">Title:</label>
+            <input type="text" name="title" required
+                    value="{% if blog != None %}{{ blog.blog_title }}{% endif %}"/>
+            <select id="content-type">
+                <option value="1">Text</option>
+                <option value="2">Image</option>
+            </select>
+            <input id="add-content" type="button" value="Add Content"/>
+            <section class="blog-content">
+                <!-- content goes here -->
+                {% if blog != None %}
+                    {% for content in blog.contents.all %}
+                        <div class="form-row">
+                        <input type="hidden" name="contentid" value="{{ content.id }}"/>
+                        {% if content.content_type.type_name == "TEXT" %}
+                            <label for="body">Body:</label>
+                            <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
+                            <textarea name="body">{{ content.content_text }}</textarea>
+                        {% elif content.content_type.type_name == "IMAGE" %}
+                            <label for="image">Image:</label>
+                            <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
+                            <input name="image" type="file"/>
+                            <p><img src="/get-img/{{ content.id }}" alt="image"/></p>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </section>
+            {% if blog != None %}
+            <input type="hidden" name="blogid" value="{{ blog.id }}" />
+            {% endif %}
+            <br/>
+            <input type="button" value="Cancel" onclick="goBack()"/>
+            <input type="submit" value="Save Blog"/>
+        </fieldset>
+    </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,98 @@
+input[type=text], select, input[type=button], input[type=submit] {
+  height: 40px;
+  font: inherit;
+  border-style: none;
+  border-radius: 3px; }
+
+body {
+  font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+main.new-blog-form {
+  width: 60%;
+  margin: 2% auto;
+  background-color: #f8f8f8; }
+
+p img {
+  width: 250px; }
+
+section.blog-content {
+  margin-top: 30px; }
+
+.form-row {
+  position: relative;
+  margin: 0 0 30px;
+  padding-top: 20px; }
+  .form-row:after {
+    content: " ";
+    display: table;
+    clear: both; }
+  .form-row label {
+    line-height: normal; }
+  .form-row input[type=button] {
+    display: block;
+    float: left; }
+  .form-row i.fa-close {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 0; }
+
+label {
+  line-height: 40px;
+  width: 60px;
+  float: left;
+  margin-right: 10px; }
+
+input[type=text] {
+  width: 350px;
+  padding: 0 10px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #CCC;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #CCC;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #CCC;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: #CCC;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px; }
+
+select {
+  width: auto;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #CCC;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #CCC;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #CCC;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-left-color: #CCC;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px; }
+
+input[type=button], input[type=submit] {
+  width: auto;
+  background-color: #6B6B6B;
+  font-family: Helvetica;
+  font-weight: 300;
+  line-height: 20px;
+  letter-spacing: 4px;
+  color: #FFF;
+  transition: background-color 300ms;
+  padding: 5px 20px; }
+  input[type=button]:hover, input[type=submit]:hover {
+    background-color: #E09B5E; }
+
+/*# sourceMappingURL=styles.css.map */
