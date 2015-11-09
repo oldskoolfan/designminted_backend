@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'blogwebapp',
     'blogapi',
     'corsheaders',
+    'oauth2_provider',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,8 +60,16 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'dmblogapi.urls'
 CORS_ORIGIN_ALLOW_ALL = True
 
+OAUTH2_PROVIDER = {
+    # this is the list of available scopes
+    'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'}
+}
+
 REST_FRAMEWORK= {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
     'PAGINATE_BY': 10,
     'PAGINATE_BY_PARAM': 'page_size',
     'MAX_PAGINATE_BY': 100,
@@ -141,3 +150,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+APPEND_SLASH = True

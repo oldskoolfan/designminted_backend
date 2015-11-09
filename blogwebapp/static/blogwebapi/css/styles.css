@@ -5,12 +5,24 @@ input[type=text], select, input[type=button], input[type=submit] {
   border-radius: 3px; }
 
 body {
-  font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif; }
-
-main.new-blog-form {
-  width: 60%;
-  margin: 2% auto;
+  font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #f8f8f8; }
+
+h1 {
+  text-align: center;
+  margin: 20px 0; }
+
+a#new-blog-link {
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  text-align: right; }
+
+main {
+  width: 60%;
+  margin: 2% auto; }
+  main#bloglist {
+    text-align: center; }
 
 p img {
   width: 250px; }

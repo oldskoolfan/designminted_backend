@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'db_table': 'blogs_blog',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Comment',
@@ -30,11 +30,11 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('comment_text', models.TextField()),
                 ('comment_date', models.DateTimeField(verbose_name=b'date posted')),
-                ('comment_blog', models.ForeignKey(related_name='comments', to='blogs.Blog')),
+                ('comment_blog', models.ForeignKey(related_name='comments', to='blogapi.Blog')),
             ],
             options={
+                'db_table': 'blogs_comment',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Content',
@@ -42,15 +42,14 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('content_caption', models.CharField(max_length=250, null=True)),
                 ('content_text', models.TextField(null=True)),
-                ('content_data', models.TextField(null=True)),
+                ('content_data', models.BinaryField(null=True)),
                 ('file_extension', models.CharField(max_length=10, null=True)),
                 ('created_date', models.DateTimeField()),
-                ('blog', models.ForeignKey(related_name='contents', to='blogs.Blog')),
+                ('blog', models.ForeignKey(related_name='contents', to='blogapi.Blog')),
             ],
             options={
                 'db_table': 'blogs_blog_contents',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='ContentType',
@@ -61,12 +60,10 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'blogs_content_type',
             },
-            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='content',
             name='content_type',
-            field=models.ForeignKey(related_name='contentType', to='blogs.ContentType'),
-            preserve_default=True,
+            field=models.ForeignKey(related_name='contentType', to='blogapi.ContentType'),
         ),
     ]

@@ -1,42 +1,56 @@
 body
-  font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif
+	font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif
+	background-color: #f8f8f8
 
-main.new-blog-form
-  width: 60%
-  margin: 2% auto
-  background-color: #f8f8f8
+h1
+	text-align: center
+	margin: 20px 0
+	
+a#new-blog-link
+	display: block
+	width: 60%
+	margin: 0 auto
+	text-align: right
+
+main
+	width: 60%
+	margin: 2% auto
+
+	&#bloglist
+		text-align: center
+
 
 p img
-  width: 250px
+	width: 250px
 
 section.blog-content
-  margin-top: 30px
+	margin-top: 30px
 
 .form-row
-  position: relative
-  +clearfix
-  margin: 0 0 30px
-  padding-top: 20px
+	position: relative
+	+clearfix
+	margin: 0 0 30px
+	padding-top: 20px
 
-  label
-    line-height: normal
-  input[type=button]
-    display: block
-    float: left
-  i.fa-close
-    cursor: pointer
-    position: absolute
-    right: 10px
-    top: 0
+	label
+		line-height: normal
+	input[type=button]
+		display: block
+		float: left
+	i.fa-close
+		cursor: pointer
+		position: absolute
+		right: 10px
+		top: 0
 
 label
-  line-height: 40px
-  width: 60px
-  float: left
-  margin-right: 10px
+	line-height: 40px
+	width: 60px
+	float: left
+	margin-right: 10px
 input[type=text]
-  +textbox(350px)
+	+textbox(350px)
 select
-  +select
+	+select
 input[type=button],input[type=submit]
-  +button
+	+button

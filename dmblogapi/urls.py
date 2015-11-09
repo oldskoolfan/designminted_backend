@@ -36,5 +36,7 @@ urlpatterns = [
     url(r'^admin/delete-blog/(?P<id>[0-9]+)', DeleteBlogView.as_view()),
     url(r'^admin/edit-blog/(?P<id>[0-9]+)', EditBlogView.as_view()),
     url(r'^admin/new-blog/', AddNewBlogView.as_view()),
-    url(r'get-img/(?P<id>[0-9]+)', views.ImageView.as_view())
+    url(r'get-img/(?P<id>[0-9]+)', views.ImageView.as_view()),
+    url(r'create-user/', views.NewUserView.as_view()),
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

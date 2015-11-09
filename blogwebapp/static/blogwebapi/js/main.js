@@ -56,6 +56,6 @@ $(function() {
         if (type == 1) //$newEl.focus();
             tinymce.init({selector: "textarea"});
     });
-
-    tinymce.init({selector: "textarea"});
+    if (typeof tinymce != "undefined")
+        tinymce.init({selector: "textarea"});
 });

@@ -10,6 +10,8 @@
 </head>
 <body>
     <h1>All Blogs</h1>
+    <a id="new-blog-link" href="/admin/new-blog/">ADD NEW</a>
+    <main id="bloglist">
     {% if blogs != None %}
         {% for blog in blogs %}
             <div class="blog-row">
@@ -32,6 +34,6 @@
     {% else %}
     <h2>No blogs to show</h2>
     {% endif %}
-    <a href="/admin/new-blog/">ADD NEW</a>
+    </main>
 </body>
 </html>
