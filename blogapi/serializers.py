@@ -23,13 +23,6 @@ class GroupSerializer(serializers.ModelSerializer):
 		model = Group
 		fields = ('url', 'name')
 
-class BlogSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Blog
-		#fields = ('id', 'blog_title', 'pub_date', 'user', 'contents', 'comments')
-	contents = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
-	comments = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
-
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
@@ -43,10 +36,21 @@ class ContentTypeSerializer(serializers.ModelSerializer):
 class ContentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Content
-		#fields = ('id', 'content_caption', 'content_text', 'content_data', 'file_extension',
-		#	'created_date', 'blog', 'contentformat')
+		fields = ('id', 'content_type', 'content_caption', 'content_text', 'file_extension',
+			'created_date')
 	#contentformat = serializers.PrimaryKeyRelatedField(source='content_type', read_only=True)
 	content_type = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
+	#content_type = ContentTypeSerializer()
+
+class BlogSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Blog
+		#fields = ('id', 'blog_title', 'pub_date', 'user', 'contents', 'comments')
+	#contents = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
+	#comments = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
+	contents = ContentSerializer(many=True)
+	comments = CommentSerializer(many=True)
+
 class BlogContentCommentSerializer(serializers.Serializer):
 	blogs = BlogSerializer(many=True)
 	contents = ContentSerializer(many=True)

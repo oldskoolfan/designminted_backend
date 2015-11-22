@@ -10,7 +10,10 @@
 </head>
 <body>
     <h1>All Blogs</h1>
-    <a id="new-blog-link" href="/admin/new-blog/">ADD NEW</a>
+    <nav>
+        <a class="nav-link" href="/admin/logout/">LOG OUT</a>
+        <a class="nav-link" href="/admin/new-blog/">ADD NEW</a>
+    </nav>
     <main id="bloglist">
     {% if blogs != None %}
         {% for blog in blogs %}

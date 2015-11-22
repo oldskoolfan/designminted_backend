@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
@@ -8,16 +8,26 @@ from datetime import datetime
 
 # Create your views here.
 
-class IndexView(TemplateView):
-    template_name = "index.html"
+class AdminBaseView(TemplateView):
+    def __init__(self):
+        TemplateView.__init__(self)
+        self.isAuthenticated = False
+    def authenticate(self, request):
+        if not request.user.is_authenticated():
+            return HttpResponseRedirect('/admin/login/?next=/admin/blogs/')
+        self.isAuthenticated = True
+        return
 
-class AboutView(TemplateView):
-    template_name = "about.html"
-
-class BlogView(TemplateView):
+class BlogView(AdminBaseView):
     template_name = "blogs.html"
     def get(self, request, *args, **kwargs):
-        blogs = Blog.objects.all();
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
+        blogs = Blog.objects.all()
         context = { "blogs": blogs }
         return render(request, self.template_name, context)
 
@@ -29,7 +39,7 @@ class DeleteBlogView(View):
         return HttpResponseRedirect('/admin/blogs/')
 
 
-class BlogBaseView(TemplateView):
+class BlogBaseView(AdminBaseView):
     def getIdFromList(selfself, list, index):
         try:
             return list[index]
@@ -68,6 +78,12 @@ class BlogBaseView(TemplateView):
 class EditBlogView(BlogBaseView):
     template_name = "blog-form.html"
     def get(self, request, **kwargs):
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
         id = kwargs['id']
         blog = Blog.objects.get(pk=id)
         if blog != None:
@@ -75,7 +91,14 @@ class EditBlogView(BlogBaseView):
             return render(request, self.template_name, context)
         else:
             return HttpResponseRedirect('/admin/blogs/')
+
     def post(self, request, **kwargs):
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
         blog = Blog.objects.get(pk=request.POST['blogid'])
         contentIds = request.POST.getlist('contentid')
         self.addBlogContents(blog, request, contentIds)
@@ -84,8 +107,21 @@ class EditBlogView(BlogBaseView):
 class AddNewBlogView(BlogBaseView):
     template_name = "blog-form.html"
     def get(self, request, *args, **kwargs):
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
         return render(request, self.template_name)
+
     def post(self, request):
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
         contentIds = request.POST.getlist('contentid')
         blog = Blog(
             blog_title = request.POST['title'],

@@ -30,8 +30,8 @@ router.register(r'contents', views.ContentViewSet)
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^home/', IndexView.as_view()),
-    url(r'^about-us/', AboutView.as_view()),
+    #url(r'^home/', IndexView.as_view()),
+    #url(r'^about-us/', AboutView.as_view()),
     url(r'^admin/blogs/', BlogView.as_view()),
     url(r'^admin/delete-blog/(?P<id>[0-9]+)', DeleteBlogView.as_view()),
     url(r'^admin/edit-blog/(?P<id>[0-9]+)', EditBlogView.as_view()),

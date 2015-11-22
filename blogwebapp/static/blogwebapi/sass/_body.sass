@@ -5,12 +5,20 @@ body
 h1
 	text-align: center
 	margin: 20px 0
-	
-a#new-blog-link
-	display: block
+
+nav
 	width: 60%
 	margin: 0 auto
+	overflow: auto
+
+a.nav-link
+	display: inline-block
+	float: right
+	//width: 60%
+	//margin: 0 auto
 	text-align: right
+	&:first-of-type
+		margin-left: 10px
 
 main
 	width: 60%

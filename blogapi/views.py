@@ -14,6 +14,7 @@ class BlogViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows blogs to be viewed or edited.
     """
+    permission_classes = (AllowAny,)
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
@@ -38,7 +39,6 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #resource_name = False
 
 class GroupViewSet(viewsets.ModelViewSet):
     """

@@ -25,7 +25,7 @@ with open('/etc/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -72,32 +72,34 @@ REST_FRAMEWORK= {
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
-    'PAGINATE_BY': 10,
-    'PAGINATE_BY_PARAM': 'page_size',
-    'MAX_PAGINATE_BY': 100,
+    #'PAGINATE_BY': 10,
+    #'PAGINATE_BY_PARAM': 'page_size',
+    #'MAX_PAGINATE_BY': 100,
     'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
-    'DEFAULT_PAGINATION_SERIALIZER_CLASS':
-        'rest_framework_json_api.pagination.PageNumberPagination',
+    #'DEFAULT_PAGINATION_SERIALIZER_CLASS':
+    #    'rest_framework_json_api.pagination.PageNumberPagination',
     #    'rest_framework_ember.pagination.PaginationSerializer',
     'DEFAULT_PARSER_CLASSES': (
-        'rest_framework_json_api.parsers.JSONParser',
+        #'rest_framework_json_api.parsers.JSONParser',
         #"rest_framework_json_api.parsers.JsonApiParser",
-        #'rest_framework_ember.parsers.JSONParser',
+        'rest_framework_ember.parsers.JSONParser',
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser'
     ),
     'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework_json_api.renderers.JSONRenderer',
+        #'rest_framework_json_api.renderers.JSONRenderer',
         #"rest_framework_json_api.renderers.JsonApiRenderer",
-        #'rest_framework_ember.renderers.JSONRenderer',
+        'rest_framework_ember.renderers.JSONRenderer',
+        #'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
 }
 
-#REST_EMBER_FORMAT_KEYS = True
-JSON_API_FORMAT_KEYS = 'dasherize'
-JSON_API_FORMAT_RELATION_KEYS = 'dasherize'
+REST_EMBER_FORMAT_KEYS = True
+REST_EMBER_PLURALIZE_KEYS = True
+#JSON_API_FORMAT_KEYS = 'dasherize'
+#JSON_API_FORMAT_RELATION_KEYS = 'dasherize'
 
 TEMPLATES = [
     {
@@ -152,5 +154,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/users/andrew/PycharmProjects/dmblogapi/blogwebapp/static/'
 
 #APPEND_SLASH = True

@@ -25,7 +25,7 @@ class Content(models.Model):
     class Meta:
         db_table = "blogs_blog_contents"
     blog = models.ForeignKey(Blog, related_name="contents")
-    content_type = models.ForeignKey(ContentType, related_name="contentType")
+    content_type = models.ForeignKey(ContentType, related_name="content_type")
     content_caption = models.CharField(max_length=250, null=True)
     content_text = models.TextField(null=True)
     #content_data = models.TextField(null=True)
