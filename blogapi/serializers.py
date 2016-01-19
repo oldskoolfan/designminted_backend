@@ -2,16 +2,9 @@ __author__ = 'andrew'
 
 
 from django.contrib.auth.models import User, Group
-from blogapi.models import Blog, Content, ContentType, Comment
+from blogapi.models import Blog, Content, ContentType, Comment, ContactFormMessage
 from rest_framework import serializers
 
-import base64;
-
-# class BlobField(serializers.Field):
-# 	def to_representation(self, obj):
-# 		return obj
-# 	def to_internal_value(self, data):
-# 		return base64.encodestring(data);
 
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -26,7 +19,9 @@ class GroupSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Comment
-		fields = ('id', 'comment_text', 'comment_date')
+		# fields = ('id', 'comment_text', 'comment_date', 'comment_blog',
+		# 		  'user')
+		user = UserSerializer
 
 class ContentTypeSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -38,16 +33,11 @@ class ContentSerializer(serializers.ModelSerializer):
 		model = Content
 		fields = ('id', 'content_type', 'content_caption', 'content_text', 'file_extension',
 			'created_date')
-	#contentformat = serializers.PrimaryKeyRelatedField(source='content_type', read_only=True)
 	content_type = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
-	#content_type = ContentTypeSerializer()
 
 class BlogSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Blog
-		#fields = ('id', 'blog_title', 'pub_date', 'user', 'contents', 'comments')
-	#contents = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
-	#comments = serializers.PrimaryKeyRelatedField(many=True, required=False, read_only=True)
 	contents = ContentSerializer(many=True)
 	comments = CommentSerializer(many=True)
 
@@ -56,3 +46,7 @@ class BlogContentCommentSerializer(serializers.Serializer):
 	contents = ContentSerializer(many=True)
 	comments = CommentSerializer(many=True)
 	content_formats = ContentTypeSerializer(many=True)
+
+class ContactFormMessageSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ContactFormMessage

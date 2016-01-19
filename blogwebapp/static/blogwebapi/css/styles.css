@@ -4,6 +4,34 @@ input[type=text], select, input[type=button], input[type=submit] {
   border-style: none;
   border-radius: 3px; }
 
+main#bloglist div.blog-row {
+  margin: 60px 0; }
+  main#bloglist div.blog-row table {
+    width: 100%;
+    margin: 0 auto;
+    table-layout: auto;
+    border-collapse: collapse; }
+  main#bloglist div.blog-row td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 0.8em;
+    text-align: left; }
+    main#bloglist div.blog-row td:nth-of-type(2) {
+      width: 50%; }
+    main#bloglist div.blog-row td:last-of-type {
+      width: 25%;
+      text-align: center; }
+
+#pagelist {
+  width: 20%;
+  display: table; }
+  #pagelist .blog-row {
+    display: table-row; }
+    #pagelist .blog-row h2, #pagelist .blog-row a {
+      display: table-cell; }
+    #pagelist .blog-row h2 {
+      width: 85%; }
+
 body {
   font: 400 1em "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #f8f8f8; }
@@ -15,14 +43,13 @@ h1 {
 nav {
   width: 60%;
   margin: 0 auto;
-  overflow: auto; }
+  overflow: auto;
+  text-align: center; }
 
 a.nav-link {
-  display: inline-block;
-  float: right;
-  text-align: right; }
-  a.nav-link:first-of-type {
-    margin-left: 10px; }
+  display: inline-block; }
+  a.nav-link:not(:last-of-type) {
+    margin-right: 10px; }
 
 main {
   width: 60%;
@@ -112,5 +139,10 @@ input[type=button], input[type=submit] {
   padding: 5px 20px; }
   input[type=button]:hover, input[type=submit]:hover {
     background-color: #E09B5E; }
+
+footer {
+  margin: 30px 0;
+  text-align: center;
+  font-size: 0.8em; }
 
 /*# sourceMappingURL=styles.css.map */

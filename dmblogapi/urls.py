@@ -26,16 +26,21 @@ router.register(r'blogs', views.BlogViewSet)
 router.register(r'comments', views.CommentViewSet)
 router.register(r'content-types', views.ContentTypeViewSet)
 router.register(r'contents', views.ContentViewSet)
+router.register(r'contactFormMessages', views.ContactFormMessageViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^home/', IndexView.as_view()),
-    #url(r'^about-us/', AboutView.as_view()),
+    url(r'update-comment-approval/(?P<id>[0-9]+)', views.UpdateCommentApprovalView.as_view()),
+
+    # admin stuff
     url(r'^admin/blogs/', BlogView.as_view()),
     url(r'^admin/delete-blog/(?P<id>[0-9]+)', DeleteBlogView.as_view()),
     url(r'^admin/edit-blog/(?P<id>[0-9]+)', EditBlogView.as_view()),
     url(r'^admin/new-blog/', AddNewBlogView.as_view()),
+    url(r'^admin/pages/', PagesBlogView.as_view()),
+
+    # misc
     url(r'get-img/(?P<id>[0-9]+)', views.ImageView.as_view()),
     url(r'create-user/', views.NewUserView.as_view()),
     url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),

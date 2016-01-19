@@ -28,9 +28,9 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('comment_text', models.TextField()),
                 ('comment_date', models.DateTimeField(verbose_name=b'date posted')),
                 ('comment_blog', models.ForeignKey(related_name='comments', to='blogapi.Blog')),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'db_table': 'blogs_comment',
@@ -64,6 +64,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='content',
             name='content_type',
-            field=models.ForeignKey(related_name='contentType', to='blogapi.ContentType'),
+            field=models.ForeignKey(related_name='content_type', to='blogapi.ContentType'),
         ),
     ]

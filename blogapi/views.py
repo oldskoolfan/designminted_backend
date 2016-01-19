@@ -1,14 +1,15 @@
-from blogapi.models import Blog, Comment, ContentType, Content
+from blogapi.models import Blog, Comment, ContentType, Content, ContactFormMessage
 from django.db.models import Q
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.permissions import AllowAny
-from rest_framework.decorators import renderer_classes, api_view
+from django.core.mail import send_mail
 from blogapi.renderers import ImageRenderer
 from rest_framework.views import APIView
 from blogapi.serializers import BlogSerializer, CommentSerializer, UserSerializer, \
-    GroupSerializer, ContentSerializer, ContentTypeSerializer
+    GroupSerializer, ContentSerializer, ContentTypeSerializer, ContactFormMessageSerializer
 
 class BlogViewSet(viewsets.ModelViewSet):
     """
@@ -18,11 +19,37 @@ class BlogViewSet(viewsets.ModelViewSet):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
 
+class ContactFormMessageViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
+    queryset = ContactFormMessage.objects.all()
+    serializer_class = ContactFormMessageSerializer
+    def create(self, request):
+        try:
+            serializer = ContactFormMessageSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                subject = "Contact Form Submission"
+                message = request.data["message"]
+                fromAddr = request.data["email"]
+                toAddr = "designminted@gmail.com"
+                #user = "harris.1305.autobot@gmail.com"
+                #pwd = "Salem:28"
+
+                # send email
+                send_mail(subject, message, fromAddr, [toAddr], True)
+
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response(e, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ContentTypeViewSet(viewsets.ModelViewSet):
     queryset = ContentType.objects.all()
     serializer_class = ContentTypeSerializer
 
 class ContentViewSet(viewsets.ModelViewSet):
+    permission_classes = (AllowAny,)
     queryset = Content.objects.all()
     serializer_class = ContentSerializer
 
@@ -30,6 +57,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows comments to be viewed or edited.
     """
+    permission_classes = (AllowAny,)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -39,6 +67,14 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset = queryset.filter(username = username)
+        return queryset
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -67,3 +103,18 @@ class NewUserView(APIView):
             return Response({"msg": "User created successfully!"})
         else:
             return Response({"msg": "Error: User already exists"})
+
+class UpdateCommentApprovalView(APIView):
+    permission_classes = (AllowAny,)
+    def post(self, request, **kwargs):
+        approved = request.POST['approve'] == 'true'
+        id = kwargs['id']
+        comment = Comment.objects.get(pk=id)
+        context = {}
+
+        if comment != None:
+            #comment.update(is_approved = approved)
+            comment.is_approved = approved
+            comment.save()
+            context = CommentSerializer(comment).data
+        return Response(context)

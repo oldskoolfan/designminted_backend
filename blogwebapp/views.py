@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.views.generic.base import View
@@ -27,7 +27,20 @@ class BlogView(AdminBaseView):
         if not self.isAuthenticated:
             return redirect
 
-        blogs = Blog.objects.all()
+        blogs = Blog.objects.filter(page_type=Blog.BLOG)
+        context = { "blogs": blogs }
+        return render(request, self.template_name, context)
+
+class PagesBlogView(AdminBaseView):
+    template_name = "pages.html"
+    def get(self, request):
+
+        # make sure we're authenticated
+        redirect = self.authenticate(request)
+        if not self.isAuthenticated:
+            return redirect
+
+        blogs = Blog.objects.filter(~Q(page_type = Blog.BLOG))
         context = { "blogs": blogs }
         return render(request, self.template_name, context)
 
@@ -40,7 +53,7 @@ class DeleteBlogView(View):
 
 
 class BlogBaseView(AdminBaseView):
-    def getIdFromList(selfself, list, index):
+    def getIdFromList(self, list, index):
         try:
             return list[index]
         except IndexError:
@@ -102,7 +115,9 @@ class EditBlogView(BlogBaseView):
         blog = Blog.objects.get(pk=request.POST['blogid'])
         contentIds = request.POST.getlist('contentid')
         self.addBlogContents(blog, request, contentIds)
-        return HttpResponseRedirect('/admin/blogs/')
+
+        link = '/admin/blogs/' if blog.page_type == Blog.BLOG else '/admin/pages/'
+        return HttpResponseRedirect(link)
 
 class AddNewBlogView(BlogBaseView):
     template_name = "blog-form.html"

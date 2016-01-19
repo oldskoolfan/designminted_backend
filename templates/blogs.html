@@ -1,42 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>All Blogs</title>
-    {% load staticfiles %}
-    <link href="{% static "blogwebapi/css/styles.css" %}" rel="stylesheet">
-    <script src="{% static "blogwebapi/js/jquery-2.1.4.min.js" %}"></script>
-    <script src="{% static "blogwebapi/js/main.js" %}"></script>
-</head>
-<body>
-    <h1>All Blogs</h1>
-    <nav>
-        <a class="nav-link" href="/admin/logout/">LOG OUT</a>
-        <a class="nav-link" href="/admin/new-blog/">ADD NEW</a>
-    </nav>
-    <main id="bloglist">
-    {% if blogs != None %}
-        {% for blog in blogs %}
-            <div class="blog-row">
-                <div>
-                    <h2>{{ blog.blog_title }}</h2>
+{% include "header.html" %}
+<h1>All Blogs</h1>
+<nav>
+    <a class="nav-link" href="/admin/logout/">LOG OUT</a>
+    <a class="nav-link" href="/admin/new-blog/">ADD NEW</a>
+    <a class="nav-link" href="/admin/pages/">EDIT PAGES</a>
+</nav>
+<main id="bloglist">
+{% if blogs != None %}
+    {% csrf_token %}
+    {% for blog in blogs %}
+        <div class="blog-row">
+            <div>
+                <h2>{{ blog.blog_title }}</h2>
 
-                    {% for content in blog.contents.all %}
-                        {% if content.content_type.type_name == "TEXT" %}
-                            <p>{{ content.content_text|safe }}</p>
+                {% for content in blog.contents.all %}
+                    {% if content.content_type.type_name == "TEXT" %}
+                        <p>{{ content.content_text|safe }}</p>
+                    {% else %}
+                        <p><img src="/get-img/{{ content.id }}" alt="image"/></p>
+                    {% endif %}
+                {%  endfor %}
+                <a href="/admin/edit-blog/{{ blog.id }}">EDIT</a>
+                <a href="/admin/delete-blog/{{ blog.id }}">DELETE</a>
+                <span>{{ blog.pub_date }}</span>
+                {% if blog.has_comments %}
+                    <h3>Comments</h3>
+                    <table>
+                    <tr>
+                        <th>Username</th>
+                        <th>Comment Text</th>
+                        <th>Date Posted</th>
+                    </tr>
+                    {% for comment in blog.comments.all %}
+                        <tr>
+                        <td>{{ comment.user.username }}</td>
+                        <td>{{ comment.comment_text }}</td>
+                        <td>{{ comment.comment_date|date:"M d Y" }} {{ comment.comment_date|time:"g:i a T" }}</td>
+                        <td>
+                        {% if not comment.is_approved %}
+                            <button class="approve" data-commentid="{{ comment.id }}">Approve</button>
                         {% else %}
-                            <p><img src="/get-img/{{ content.id }}" alt="image"/></p>
+                            <button class="unapprove" data-commentid="{{ comment.id }}">Unapprove</button>
                         {% endif %}
+                        <button class="delete" data-commentid="{{ comment.id }}">Delete</button>
+                        </td>
+                        </tr>
                     {%  endfor %}
-                    <a href="/admin/edit-blog/{{ blog.id }}">EDIT</a>
-                    <a href="/admin/delete-blog/{{ blog.id }}">DELETE</a>
-                    <span>{{ blog.pub_date }}</span>
-                </div>
+                    </table>
+                {% endif %}
             </div>
-        {% endfor %}
-    {% else %}
-    <h2>No blogs to show</h2>
-    {% endif %}
-    </main>
-</body>
-</html>
+        </div>
+    {% endfor %}
+{% else %}
+<h2>No blogs to show</h2>
+{% endif %}
+</main>
+{% include "footer.html" %}

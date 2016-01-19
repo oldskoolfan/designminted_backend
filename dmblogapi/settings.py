@@ -157,3 +157,17 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/users/andrew/PycharmProjects/dmblogapi/blogwebapp/static/'
 
 #APPEND_SLASH = True
+
+# email settings
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "harris.1305.autobot@gmail.com"
+EMAIL_HOST_PASSWORD = "Salem:28"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+
+
+
+
+
+
