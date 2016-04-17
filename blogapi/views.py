@@ -1,7 +1,9 @@
 from blogapi.models import Blog, Comment, ContentType, Content, ContactFormMessage
 from django.db.models import Q
+from django.views.decorators.gzip import gzip_page
+from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from rest_framework import viewsets, settings
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -83,9 +85,15 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
+#@gzip_page
 class ImageView(APIView):
     renderer_classes = (ImageRenderer, )
     permission_classes = (AllowAny, )
+
+    @method_decorator(gzip_page)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ImageView, self).dispatch(request, *args, **kwargs)
+
     def get(*args, **kwargs):
         content = Content.objects.get(pk=kwargs['id'])
         return Response(content.content_data, content_type=content.file_extension)
