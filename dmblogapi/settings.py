@@ -20,7 +20,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'yy87x_ufca*7!p^ug0-@)swh@i*8vbp+g!(!_zeupt6jojm)v!'
 with open('/etc/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
@@ -162,7 +161,8 @@ STATIC_ROOT = '/users/andrew/PycharmProjects/dmblogapi/blogwebapp/static/'
 # email settings
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "harris.1305.autobot@gmail.com"
-EMAIL_HOST_PASSWORD = "Salem:28"
+with open("/etc/email_pass.txt") as f:
+    EMAIL_HOST_PASSWORD = f.read().strip()
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
