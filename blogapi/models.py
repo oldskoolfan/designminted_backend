@@ -73,3 +73,8 @@ class ContactFormMessage(models.Model):
     email = models.CharField(max_length=250, null=False)
     message = models.TextField(null=False)
     created_date = models.DateTimeField(auto_now_add=True)
+
+
+class ErrorMsg(object):
+    def __init__(self, msg):
+        self.msg = msg

@@ -1,4 +1,4 @@
-from blogapi.models import Blog, Comment, ContentType, Content, ContactFormMessage
+from blogapi.models import Blog, Comment, ContentType, Content, ContactFormMessage, ErrorMsg
 from django.db.models import Q
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
@@ -11,7 +11,8 @@ from django.core.mail import send_mail
 from blogapi.renderers import ImageRenderer
 from rest_framework.views import APIView
 from blogapi.serializers import BlogSerializer, CommentSerializer, UserSerializer, \
-    GroupSerializer, ContentSerializer, ContentTypeSerializer, ContactFormMessageSerializer
+    GroupSerializer, ContentSerializer, ContentTypeSerializer, ContactFormMessageSerializer, \
+    ErrorSerializer
 
 class BlogViewSet(viewsets.ModelViewSet):
     """
@@ -38,7 +39,7 @@ class ContactFormMessageViewSet(viewsets.ModelViewSet):
                 #pwd = "Salem:28"
 
                 # send email
-                send_mail(subject, message, fromAddr, [toAddr], True)
+                send_mail(subject, message, fromAddr, [toAddr], False)
 
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
@@ -106,11 +107,14 @@ class NewUserView(APIView):
         password = request.POST['pass']
         existingUsers = User.objects.filter(Q(email=email) | Q(username=name))
         if existingUsers.count() == 0:
-            user = User.objects.create_user(name, email, password)
-            #serializer = UserSerializer(user, context={'request':request})
-            return Response({"msg": "User created successfully!"})
+            User.objects.create_user(name, email, password)
+            #return Response({"msg": "User created successfully!"})
+            msg = "User created successfully!"
         else:
-            return Response({"msg": "Error: User already exists"})
+            #return Response({"msg": "Error: User already exists"})
+            msg = "Error: User already exists"
+        serializer = ErrorSerializer(ErrorMsg(msg=msg))
+        return Response(serializer.data)
 
 class UpdateCommentApprovalView(APIView):
     permission_classes = (AllowAny,)

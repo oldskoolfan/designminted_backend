@@ -63,6 +63,11 @@ class BlogBaseView(AdminBaseView):
         textType = ContentType.objects.get(id=1)
         imageType = ContentType.objects.get(id=2)
         idCounter = 0
+
+        # update blog title if we need to
+        blog.blog_title = request.POST['title']
+        blog.save()
+
         for text in bodyList:
             blog.contents.update_or_create(
                 id = self.getIdFromList(ids, idCounter),

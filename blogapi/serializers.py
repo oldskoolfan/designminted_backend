@@ -2,7 +2,7 @@ __author__ = 'andrew'
 
 
 from django.contrib.auth.models import User, Group
-from blogapi.models import Blog, Content, ContentType, Comment, ContactFormMessage
+from blogapi.models import Blog, Content, ContentType, Comment, ContactFormMessage, ErrorMsg
 from rest_framework import serializers
 
 
@@ -50,3 +50,8 @@ class BlogContentCommentSerializer(serializers.Serializer):
 class ContactFormMessageSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ContactFormMessage
+
+
+
+class ErrorSerializer(serializers.Serializer):
+	msg = serializers.CharField()
