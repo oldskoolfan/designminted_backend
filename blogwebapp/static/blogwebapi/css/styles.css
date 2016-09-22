@@ -82,9 +82,11 @@ section.blog-content {
     right: 10px;
     top: 0; }
 
+.row {
+  margin: 10px 0; }
+
 label {
   line-height: 40px;
-  width: 60px;
   float: left;
   margin-right: 10px; }
 

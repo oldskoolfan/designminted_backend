@@ -53,45 +53,79 @@ class DeleteBlogView(View):
 
 
 class BlogBaseView(AdminBaseView):
-    def getIdFromList(self, list, index):
+    def getItemFromList(self, list, index):
         try:
             return list[index]
         except IndexError:
             return None
-    def addBlogContents(self, blog, request, ids):
-        bodyList = request.POST.getlist('body')
-        textType = ContentType.objects.get(id=1)
-        imageType = ContentType.objects.get(id=2)
-        idCounter = 0
 
-        # update blog title if we need to
+    def getIdFromList(self, list, index):
+        try:
+            id = list[index]
+            return id if int(id) != -1 else None
+        except (IndexError, ValueError):
+            return None
+    def addBlogContents(self, blog, request, ids):
+        orderList = request.POST.getlist('position')
+        bodyList = request.POST.getlist('body')
+        typeList = request.POST.getlist("type")
+        captionList = request.POST.getlist('caption')
+        imageList = request.FILES.getlist('image')
+
+        textType = ContentType.objects.filter(type_name = 'TEXT').first()
+        imageType = ContentType.objects.filter(type_name = 'IMAGE').first()
+        itemCounter = 0
+        imgCounter = 0
+        bodyCounter = 0
+
+        # update blog title/page type if we need to
         blog.blog_title = request.POST['title']
+        blog.page_type = request.POST['page-type']
         blog.save()
 
-        for text in bodyList:
-            blog.contents.update_or_create(
-                id = self.getIdFromList(ids, idCounter),
-                defaults = {
-                    'content_type': textType,
-                    'content_text': text,
-                    'created_date': datetime.now()
-                }
-            )
-            idCounter += 1
-        imageList = request.FILES.getlist('image')
-        for image in imageList:
-            data = image.file.read()
-            ext = image.content_type
-            blog.contents.update_or_create(
-                id = self.getIdFromList(ids, idCounter),
-                defaults = {
-                    'content_type': imageType,
-                    'content_data': data,
-                    'file_extension': ext,
-                    'created_date': datetime.now()
-                }
-            )
-            idCounter += 1
+        for typeId in typeList:
+
+            try:
+                typeId = int(typeId)
+            except ValueError:
+                typeId = 0
+
+            if typeId == imageType.id:
+                image = self.getItemFromList(imageList, imgCounter)
+                if (image != None):
+                    data = image.file.read()
+                    ext = image.content_type
+                    defaults = {
+                        'content_type': imageType,
+                        'content_data': data,
+                        'file_extension': ext,
+                        'created_date': datetime.now(),
+                        'content_order': self.getItemFromList(orderList, itemCounter),
+                        'content_caption': self.getItemFromList(captionList, imgCounter)
+                    }
+                else:
+                    defaults = {
+                        'content_order': self.getItemFromList(orderList, itemCounter),
+                        'content_caption': self.getItemFromList(captionList, imgCounter)
+                    }
+                blog.contents.update_or_create(
+                    id = self.getIdFromList(ids, itemCounter),
+                    defaults = defaults
+                )
+                imgCounter += 1
+            if typeId == textType.id:
+                text = self.getItemFromList(bodyList, bodyCounter)
+                bodyCounter += 1
+                blog.contents.update_or_create(
+                    id = self.getIdFromList(ids, itemCounter),
+                    defaults = {
+                        'content_type': textType,
+                        'content_text': text,
+                        'created_date': datetime.now(),
+                        'content_order': self.getItemFromList(orderList, itemCounter),
+                    }
+                )
+            itemCounter += 1
 
 class EditBlogView(BlogBaseView):
     template_name = "blog-form.html"
@@ -105,7 +139,11 @@ class EditBlogView(BlogBaseView):
         id = kwargs['id']
         blog = Blog.objects.get(pk=id)
         if blog != None:
-            context = {"blog": blog}
+            context = {
+                "blog": blog,
+                "types": ContentType.objects.all(),
+                "pageTypes": Blog.PAGE_TYPES
+            }
             return render(request, self.template_name, context)
         else:
             return HttpResponseRedirect('/admin/blogs/')
@@ -133,7 +171,12 @@ class AddNewBlogView(BlogBaseView):
         if not self.isAuthenticated:
             return redirect
 
-        return render(request, self.template_name)
+        context = {
+            "types": ContentType.objects.all(),
+            "pageTypes": Blog.PAGE_TYPES
+        }
+
+        return render(request, self.template_name, context)
 
     def post(self, request):
 

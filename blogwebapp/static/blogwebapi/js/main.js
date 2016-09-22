@@ -36,20 +36,43 @@ function makeAjaxCall(url, verb, data, callback) {
 }
 
 function removeContent(el, contentId) {
-    el = el.target != null && typeof el == "object" ? el.target : el;
-    var $content = $(el).parents('.blog-content'),
-        $formRow = $(el).parents('.form-row');
+    var sure = confirm('Are you sure you want to delete this content?');
 
-    $content.find($formRow).remove();
+    if (sure) {
+        el = el.target != null && typeof el == "object" ? el.target : el;
+        var $content = $(el).parents('.blog-content'),
+            $formRow = $(el).parents('.form-row'),
+            type = $formRow.data('type');
 
-    if (contentId != null) {
-        var url = '/contents/' + contentId,
-            verb = 'delete';
-        makeAjaxCall(url, verb, null, null);
+        if (type == window.contentTypes.TEXT) {
+            tinymce.remove();
+            tinymce.init(tinymceOptions);
+        }
+
+        $content.find($formRow).remove();
+
+        if (contentId != null) {
+            var url = '/contents/' + contentId,
+                verb = 'delete';
+            makeAjaxCall(url, verb, null, null);
+        }
+
+        adjustPositions();
+        window.contentCount--;
     }
 }
 
+function adjustPositions() {
+    var positionCounter = 1;
+    $('.form-row').each(function() {
+        $el = $(this);
+        $el.data('position', positionCounter);
+        $el.find('input[name=position]').val(positionCounter++);
+    });
+}
+
 $(function() {
+
     // add image to page if uploaded
     $('.new-blog-form').on('change', 'input[type=file]', function() {
         var file = this.files[0],
@@ -59,31 +82,107 @@ $(function() {
             $this.parents('.form-row').find('img')
                 .remove()
                 .end()
-                .append($('<p><img src="' + reader.result + '" alt="image"/></p>'));
+                .find('input[type=file]')
+                .after($('<p><img src="' + reader.result + '" alt="image"/></p>'));
         };
         reader.readAsDataURL(file);
+
+    }).on('dragover', '[draggable=true]', function(e) { // prevent default drag handler
+        e.preventDefault();
+    }).on('dragstart', '[draggable=true]', function(e) {
+        // get text editor content
+        var $textarea = $(e.target).find('textarea'),
+            editor,
+            text,
+            position = $(e.target).data('position');
+        if ($textarea.length > 0) {
+            editor = tinymce.get($textarea.attr('id'));
+        }
+        if (editor) {
+            text = editor.getContent();
+        }
+        e.originalEvent.dataTransfer.setData('editor', $textarea.attr('id'));
+        e.originalEvent.dataTransfer.setData('text', text);
+        e.originalEvent.dataTransfer.setData('position', position);
+
+        // get html
+        e.originalEvent.dataTransfer.setData('html', e.target.id);
+    }).on('drop', '[draggable=true]', function(e) {
+        var $target = $(e.target),
+            dragPosition,
+            dragData,
+            targetPosition,
+            $row,
+            text,
+            editor;
+
+        // get form-row
+        if ($target.hasClass('form-row')) {
+            $row = $target;
+        } else {
+            $row = $target.parents('.form-row');
+        }
+
+        // get data
+        targetPosition = $row.data('position');
+        dragPosition = e.originalEvent.dataTransfer.getData('position');
+        dragData = document.getElementById(e.originalEvent.dataTransfer.getData('html'));
+
+        // move elements
+        if (targetPosition < dragPosition) {
+            $row.before(dragData);
+        } else {
+            $row.after(dragData);
+        }
+
+        // adjust positions
+        adjustPositions();
+
+        text = e.originalEvent.dataTransfer.getData('text');
+        editor = tinymce.get(e.originalEvent.dataTransfer.getData('editor'));
+        if (editor) {
+            editor.setContent(text);
+            tinymce.remove();
+            tinymce.init(tinymceOptions);
+        }
     });
 
     // add new content section
     $('#add-content').on('click', function() {
         var type = $('#content-type').val(),
+            $blogContent = $('.blog-content'),
             $rowDiv = $('<div>').addClass('form-row'),
-            $newEl;
-        $rowDiv.append('<label>').append('<i></i>').find('i')
-            .addClass('fa fa-close fa-lg').on('click', this, removeContent);
-        switch (type) {
-            case "1":
+            $newEl,
+            html;
+        window.contentCount++;
+        $rowDiv.data('type', type)
+            .attr('id', 'content-' + window.contentCount.toString())
+            .attr('draggable', true)
+            .data('position', window.contentCount)
+            .append('<input type="hidden" name="contentid" value="-1"/>')
+            .append('<input type="hidden" name="position" value="' + window.contentCount.toString() + '"/>')
+            .append('<input type="hidden" name="type" value="' + type + '"/>')
+            .append('<label>')
+            .append('<i></i>')
+            .find('i')
+            .addClass('fa fa-close fa-lg')
+            .on('click', this, removeContent);
+        switch (+type) {
+            case window.contentTypes.TEXT:
                 $rowDiv.find('label').text('Body:').attr('for', 'body');
                 $newEl = $('<textarea name="body">');
                 break;
-            case "2":
+            case window.contentTypes.IMAGE:
                 $rowDiv.find('label').text('Image:').attr('for', 'image');
-                $newEl = $('<input name="image">').attr('type', 'file');
+                $newEl = '<input name="image" type="file"/>';
+                $newEl += '<br><br><label for="caption">Caption:</label>';
+                $newEl += '<input type="text" id="caption" name="caption"/>';
                 break;
         }
         $rowDiv.append($newEl);
-        $('.blog-content').append($rowDiv);
-        if (type == 1) //$newEl.focus();
+        $blogContent.append($rowDiv);
+        if (type == 1)
+            tinymce.remove();
             tinymce.init(tinymceOptions);
     });
 
@@ -117,4 +216,10 @@ $(function() {
     // init tinymce on doc.ready
     if (typeof tinymce != "undefined")
         tinymce.init(tinymceOptions);
+
+    window.blogContents = [];
+    // get intial content positions
+    $('.form-row').each(function() {
+        window.blogContents.push(this.id);
+    })
 });

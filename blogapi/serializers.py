@@ -33,7 +33,7 @@ class ContentSerializer(serializers.ModelSerializer):
 		model = Content
 		fields = ('id', 'content_type', 'content_caption', 'content_text', 'file_extension',
 			'created_date')
-	content_type = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
+	content_type = ContentTypeSerializer(many=False)
 
 class BlogSerializer(serializers.ModelSerializer):
 	class Meta:

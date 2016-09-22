@@ -13,7 +13,7 @@
             <div>
                 <h2>{{ blog.blog_title }}</h2>
 
-                {% for content in blog.contents.all %}
+                {% for content in blog.contents.all%}
                     {% if content.content_type.type_name == "TEXT" %}
                         <p>{{ content.content_text|safe }}</p>
                     {% else %}
