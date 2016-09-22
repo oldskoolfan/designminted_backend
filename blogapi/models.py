@@ -21,7 +21,8 @@ class Blog(models.Model):
         (PORTFOLIO, 'Portfolio'),
         (BLOG, 'Blog'),
         (CONTACT, 'Contact'),
-        (TESTIMONIALS, 'Testimonials')
+        (TESTIMONIALS, 'Testimonials'),
+        (ABOUT, 'About')
     )
 
     page_type = models.IntegerField(choices=PAGE_TYPES, default=BLOG)
@@ -46,11 +47,13 @@ class ContentType(models.Model):
 class Content(models.Model):
     class Meta:
         db_table = "blogs_blog_contents"
+        ordering = ["content_order"]
     blog = models.ForeignKey(Blog, related_name="contents")
     content_type = models.ForeignKey(ContentType, related_name="content_type")
     content_caption = models.CharField(max_length=250, null=True)
     content_text = models.TextField(null=True)
     content_data = models.BinaryField(null=True)
+    content_order = models.PositiveIntegerField(null=True)
     file_extension = models.CharField(max_length=10, null=True)
     created_date = models.DateTimeField()
 

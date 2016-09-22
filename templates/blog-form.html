@@ -17,20 +17,36 @@
         {% csrf_token %}
         <fieldset>
             <legend>Blog</legend>
-            <label for="title">Title:</label>
-            <input type="text" name="title" required
-                    value="{% if blog != None %}{{ blog.blog_title }}{% endif %}"/>
-            <select id="content-type">
-                <option value="1">Text</option>
-                <option value="2">Image</option>
-            </select>
-            <input id="add-content" type="button" value="Add Content"/>
+            <div class="row">
+                <label for="page-type">Page Type:</label>
+                <select id="page-type" name="page-type">
+                    {% for type in pageTypes %}
+                    <option value="{{ type.0 }}" {% if blog.page_type == type.0 %}selected{% endif %}>{{ type.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row">
+                <label for="title">Title:</label>
+                <input type="text" name="title" required
+                        value="{% if blog != None %}{{ blog.blog_title }}{% endif %}"/>
+            </div>
+            <div class="row">
+                <select id="content-type">
+                    {% for type in types %}
+                    <option value="{{ type.id }}">{{ type.type_name }}</option>
+                    {% endfor %}
+                </select>
+                <input id="add-content" type="button" value="Add Content"/>
+            </div>
+
             <section class="blog-content">
                 <!-- content goes here -->
                 {% if blog != None %}
                     {% for content in blog.contents.all %}
-                        <div class="form-row">
+                        <div class="form-row" data-type="{{ content.content_type.id }}" data-position="{{ content.content_order }}" draggable="true" id="content-{{ content.id }}">
+                        <input type="hidden" name="position" value="{{ content.content_order }}"/>
                         <input type="hidden" name="contentid" value="{{ content.id }}"/>
+                        <input type="hidden" name="type" value="{{ content.content_type.id}}"/>
                         {% if content.content_type.type_name == "TEXT" %}
                             <label for="body">Body:</label>
                             <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
@@ -40,6 +56,8 @@
                             <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
                             <input name="image" type="file"/>
                             <p><img src="/get-img/{{ content.id }}" alt="image"/></p>
+                            <label for="caption">Caption:</label>
+                            <input name="caption" id="caption" type="text" value="{% if content.content_caption != None %}{{ content.content_caption }}{% endif %}"/>
                         {% endif %}
                         </div>
                     {% endfor %}
@@ -54,5 +72,12 @@
         </fieldset>
     </form>
     </main>
+    <script>
+        window.contentCount = {{ blog.contents.all|length }}
+        window.contentTypes = {};
+        {% for type in types %}
+            window.contentTypes['{{ type.type_name }}'] = {{ type.id }};
+        {% endfor %}
+    </script>
 </body>
 </html>
