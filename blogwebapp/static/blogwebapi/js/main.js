@@ -40,8 +40,8 @@ function removeContent(el, contentId) {
 
     if (sure) {
         el = el.target != null && typeof el == "object" ? el.target : el;
-        var $content = $(el).parents('.blog-content'),
-            $formRow = $(el).parents('.form-row'),
+        var $content = $(el).closest('.blog-content'),
+            $formRow = $(el).closest('.form-row'),
             type = $formRow.data('type');
 
         if (type == window.contentTypes.TEXT) {
@@ -76,10 +76,11 @@ $(function() {
     // add image to page if uploaded
     $('.new-blog-form').on('change', 'input[type=file]', function() {
         var file = this.files[0],
-            $this = $(this);
+            $this = $(this),
+            $row = $this.closest('.form-row');
         var reader = new FileReader();
         reader.onloadend = function() {
-            $this.parents('.form-row').find('img')
+            $row.find('img')
                 .remove()
                 .end()
                 .find('input[type=file]')
@@ -87,9 +88,13 @@ $(function() {
         };
         reader.readAsDataURL(file);
 
-    }).on('dragover', '[draggable=true]', function(e) { // prevent default drag handler
+        // set hidden image flag
+        $row.find('input[name=hasImage]').val('1');
+
+    }).on('dragover touchstart', '[draggable=true]', function(e) { // prevent default drag handler
         e.preventDefault();
-    }).on('dragstart', '[draggable=true]', function(e) {
+
+    }).on('dragstart touchstart', '[draggable=true]', function(e) {
         // get text editor content
         var $textarea = $(e.target).find('textarea'),
             editor,
@@ -107,7 +112,7 @@ $(function() {
 
         // get html
         e.originalEvent.dataTransfer.setData('html', e.target.id);
-    }).on('drop', '[draggable=true]', function(e) {
+    }).on('drop touchend', '[draggable=true]', function(e) {
         var $target = $(e.target),
             dragPosition,
             dragData,
@@ -120,7 +125,7 @@ $(function() {
         if ($target.hasClass('form-row')) {
             $row = $target;
         } else {
-            $row = $target.parents('.form-row');
+            $row = $target.closest('.form-row');
         }
 
         // get data
@@ -174,7 +179,7 @@ $(function() {
                 break;
             case window.contentTypes.IMAGE:
                 $rowDiv.find('label').text('Image:').attr('for', 'image');
-                $newEl = '<input name="image" type="file"/>';
+                $newEl = '<input name="hasImage" type="hidden" value="0"/><input name="image" type="file"/>';
                 $newEl += '<br><br><label for="caption">Caption:</label>';
                 $newEl += '<input type="text" id="caption" name="caption"/>';
                 break;
@@ -206,12 +211,12 @@ $(function() {
         var commentId = $(this).data('commentid'),
             verb = 'delete',
             url = '/comments/' + commentId,
-            comment = $(this).parents('tr'),
+            comment = $(this).closest('tr'),
             callback = function() {
                 $(comment).remove();
             };
         makeAjaxCall(url, verb, null, callback);
-    })
+    });
 
     // init tinymce on doc.ready
     if (typeof tinymce != "undefined")
@@ -221,5 +226,5 @@ $(function() {
     // get intial content positions
     $('.form-row').each(function() {
         window.blogContents.push(this.id);
-    })
+    });
 });

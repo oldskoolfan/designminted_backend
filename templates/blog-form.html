@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog Form</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    {% load staticfiles %}
-    <link href="{% static "blogwebapi/css/styles.css" %}" rel="stylesheet">
-    <script src="{% static "blogwebapi/js/jquery-2.1.4.min.js" %}"></script>
-    <script src="{% static "blogwebapi/vendor/tinymce/tinymce.min.js" %}"></script>
-{#    <script src="{% static "blogwebapi/vendor/tinymce/jquery.tinymce.min.js" %}"></script>#}
-    <script src="{% static "blogwebapi/js/main.js" %}"></script>
-</head>
-<body>
+{% include "header.html" %}
     <main class="new-blog-form">
     <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
@@ -52,6 +39,7 @@
                             <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
                             <textarea name="body">{{ content.content_text }}</textarea>
                         {% elif content.content_type.type_name == "IMAGE" %}
+                            <input type="hidden" name="hasImage" value="0"/>
                             <label for="image">Image:</label>
                             <i class="fa fa-close fa-lg" onclick="removeContent(this, {{ content.id }})"></i>
                             <input name="image" type="file"/>
@@ -79,5 +67,4 @@
             window.contentTypes['{{ type.type_name }}'] = {{ type.id }};
         {% endfor %}
     </script>
-</body>
-</html>
+{% include "footer.html" %}

@@ -71,11 +71,13 @@ class BlogBaseView(AdminBaseView):
         typeList = request.POST.getlist("type")
         captionList = request.POST.getlist('caption')
         imageList = request.FILES.getlist('image')
+        imageFlagList = request.POST.getlist("hasImage")
 
         textType = ContentType.objects.filter(type_name = 'TEXT').first()
         imageType = ContentType.objects.filter(type_name = 'IMAGE').first()
         itemCounter = 0
         imgCounter = 0
+        imgTypeCounter = 0
         bodyCounter = 0
 
         # update blog title/page type if we need to
@@ -91,8 +93,11 @@ class BlogBaseView(AdminBaseView):
                 typeId = 0
 
             if typeId == imageType.id:
-                image = self.getItemFromList(imageList, imgCounter)
+                hasImage = self.getItemFromList(imageFlagList, imgTypeCounter)
+                hasImage = bool(int(hasImage)) # convert "0"/"1" to false/true
+                image = self.getItemFromList(imageList, imgCounter) if hasImage else None
                 if (image != None):
+                    imgCounter += 1
                     data = image.file.read()
                     ext = image.content_type
                     defaults = {
@@ -101,18 +106,19 @@ class BlogBaseView(AdminBaseView):
                         'file_extension': ext,
                         'created_date': datetime.now(),
                         'content_order': self.getItemFromList(orderList, itemCounter),
-                        'content_caption': self.getItemFromList(captionList, imgCounter)
+                        'content_caption': self.getItemFromList(captionList, imgTypeCounter)
                     }
                 else:
                     defaults = {
+                        'content_type': imageType,
                         'content_order': self.getItemFromList(orderList, itemCounter),
-                        'content_caption': self.getItemFromList(captionList, imgCounter)
+                        'content_caption': self.getItemFromList(captionList, imgTypeCounter)
                     }
                 blog.contents.update_or_create(
                     id = self.getIdFromList(ids, itemCounter),
                     defaults = defaults
                 )
-                imgCounter += 1
+                imgTypeCounter += 1
             if typeId == textType.id:
                 text = self.getItemFromList(bodyList, bodyCounter)
                 bodyCounter += 1

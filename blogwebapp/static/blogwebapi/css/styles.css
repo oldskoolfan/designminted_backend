@@ -147,4 +147,11 @@ footer {
   text-align: center;
   font-size: 0.8em; }
 
+@media only screen and (max-device-width: 700px) {
+  main, nav {
+    width: 95% !important; }
+
+  input[type=text] {
+    width: auto; } }
+
 /*# sourceMappingURL=styles.css.map */

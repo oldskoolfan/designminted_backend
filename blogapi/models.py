@@ -49,7 +49,7 @@ class Content(models.Model):
         db_table = "blogs_blog_contents"
         ordering = ["content_order"]
     blog = models.ForeignKey(Blog, related_name="contents")
-    content_type = models.ForeignKey(ContentType, related_name="content_type")
+    content_type = models.ForeignKey(ContentType, related_name="content_type", db_column="content_type_id")
     content_caption = models.CharField(max_length=250, null=True)
     content_text = models.TextField(null=True)
     content_data = models.BinaryField(null=True)
