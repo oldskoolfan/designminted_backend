@@ -128,9 +128,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dmblogapi',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'USER': 'wwwuser',
+        'PASSWORD': 'bad6508333',
+        'HOST': 'ubuntudb1',
         'PORT': '3306',
     }
 }
