@@ -91,10 +91,10 @@ $(function() {
         // set hidden image flag
         $row.find('input[name=hasImage]').val('1');
 
-    }).on('dragover touchstart', '[draggable=true]', function(e) { // prevent default drag handler
+    }).on('dragover', '[draggable=true]', function(e) { // prevent default drag handler
         e.preventDefault();
 
-    }).on('dragstart touchstart', '[draggable=true]', function(e) {
+    }).on('dragstart', '[draggable=true]', function(e) {
         // get text editor content
         var $textarea = $(e.target).find('textarea'),
             editor,
@@ -112,7 +112,7 @@ $(function() {
 
         // get html
         e.originalEvent.dataTransfer.setData('html', e.target.id);
-    }).on('drop touchend', '[draggable=true]', function(e) {
+    }).on('drop', '[draggable=true]', function(e) {
         var $target = $(e.target),
             dragPosition,
             dragData,
