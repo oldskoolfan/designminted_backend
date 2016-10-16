@@ -14,17 +14,18 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+ETC_DIR = os.path.expanduser("~/etc");
+WEBROOT_DIR = os.path.expanduser("~/api.designminted.com");
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('/etc/secret_key.txt') as f:
+with open(ETC_DIR + '/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -123,14 +124,16 @@ WSGI_APPLICATION = 'dmblogapi.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+with open(ETC_DIR + "/db_pass.txt") as f:
+    DB_PASS = f.read().strip()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dmblogapi',
-        'USER': 'wwwuser',
-        'PASSWORD': 'bad6508333',
-        'HOST': 'ubuntudb1',
+        'USER': 'andrewfharris',
+        'PASSWORD': DB_PASS,
+        'HOST': 'mysql.designminted.com',
         'PORT': '3306',
     }
 }
@@ -154,14 +157,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/users/andrew/PycharmProjects/dmblogapi/blogwebapp/static/'
+STATIC_ROOT = "{}/public/static/".format(WEBROOT_DIR)
 
 #APPEND_SLASH = True
 
 # email settings
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "harris.1305.autobot@gmail.com"
-with open("/etc/email_pass.txt") as f:
+with open(ETC_DIR + "/email_pass.txt") as f:
     EMAIL_HOST_PASSWORD = f.read().strip()
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
