@@ -1,0 +1,23 @@
+section.contact
+	+clearfix
+	div
+		+span-columns(8 of 8)
+		margin-bottom: 20px
+		button
+			//float: right
+			&:first-of-type
+				margin-right: 10px
+	label
+		+span-columns(2 of 8)
+		text-align: right
+	input[type=text], textarea
+		+span-columns(4 of 8)
+
+@media (max-width: $mobileBkpt)
+	section.contact
+		input[type=text], textarea
+			+span-columns(6 of 8)		
+
+		div:last-of-type
+			display: flex
+			justify-content: center

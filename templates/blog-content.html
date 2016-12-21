@@ -1,0 +1,13 @@
+{% for content in blog.contents.all %}
+    {% if content.is_text %}
+    <p>{{content.content_text|safe}}</p>
+    {% endif %}
+    {% if content.is_image %}
+    <div class="img-wrapper">
+        <figure>
+            <img src="/get-img/{{content.id}}" alt="image">
+            <figcaption>{{content.content_caption}}</figcaption>
+        </figure>
+    </div>
+    {% endif %}
+{% endfor %}

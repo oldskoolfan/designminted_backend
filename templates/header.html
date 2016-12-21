@@ -1,14 +1,37 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Designminted Admin</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    {% load staticfiles %}
-    <link href="{% static "blogwebapi/css/styles.css" %}" rel="stylesheet">
-    <script src="{% static "blogwebapi/js/jquery-2.1.4.min.js" %}"></script>
-    <script src="{% static "blogwebapi/vendor/tinymce/tinymce.min.js" %}"></script>
-    <script src="{% static "blogwebapi/js/main.js" %}"></script>
-</head>
-<body>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DesignMinted</title>
+
+	<!-- favicons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static "blogweb/apple-touch-icon-57x57.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static "blogweb/apple-touch-icon-60x60.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static "/apple-touch-icon-72x72.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static "/apple-touch-icon-76x76.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static "/apple-touch-icon-114x114.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static "/apple-touch-icon-120x120.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static "/apple-touch-icon-144x144.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static "/apple-touch-icon-152x152.png?v=2bbOvPGkWp" %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static "/apple-touch-icon-180x180.png?v=2bbOvPGkWp" %}">
+    <link rel="icon" type="image/png" href="{% static "/favicon-32x32.png?v=2bbOvPGkWp" %}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{% static "/android-chrome-192x192.png?v=2bbOvPGkWp" %}" sizes="192x192">
+    <link rel="icon" type="image/png" href="{% static "/favicon-96x96.png?v=2bbOvPGkWp" %}" sizes="96x96">
+    <link rel="icon" type="image/png" href="{% static "/favicon-16x16.png?v=2bbOvPGkWp" %}" sizes="16x16">
+    <link rel="manifest" href="{% static "/manifest.json?v=2bbOvPGkWp" %}">
+    <link rel="mask-icon" href="{% static "/safari-pinned-tab.svg?v=2bbOvPGkWp" %}" color="#c0cfbb">
+    <link rel="shortcut icon" href="{% static "/favicon.ico?v=2bbOvPGkWp" %}">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileImage" content="{% static "/mstile-144x144.png?v=2bbOvPGkWp" %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="{% static "blogweb/css/styles.css" %}" rel="stylesheet">
+  </head>
+  <body>

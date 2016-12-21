@@ -1,0 +1,16 @@
+{% include "admin/header.html" %}
+<h1>Web Pages</h1>
+<nav>
+    <a class="nav-link" href="/admin/logout/">LOG OUT</a>
+    <a class="nav-link" href="/admin/new-blog/">ADD NEW</a>
+    <a class="nav-link" href="/admin/blogs/">EDIT BLOGS</a>
+</nav>
+<main id="pagelist">
+    {% for blog in blogs %}
+        <div class="blog-row">
+            <h2>{{ blog.blog_title }}</h2>
+            <a href="/admin/edit-blog/{{ blog.id }}">EDIT</a>
+        </div>
+    {% endfor %}
+</main>
+{% include "admin/footer.html" %}

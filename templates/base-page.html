@@ -1,0 +1,17 @@
+{% include "header.html" %}
+{% include "desktop-nav.html" %}
+<section>
+    <main>
+    {% block main_content %}
+        <h1>{{ blog.blog_title }}</h1>
+        <div class="body">
+        {% include "blog-content.html" with blog=blog %}
+        </div>
+    {% endblock %}
+    </main>
+    <aside>
+        {% load staticfiles %}
+        <img src="{% static "blogweb/img/photo_1.JPG" %}" alt="image">
+</aside>
+</section>
+{% include "footer.html" %}

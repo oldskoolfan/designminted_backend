@@ -1,0 +1,82 @@
+@media (min-width: $wideScreenBkpt)
+	nav
+		+span-columns(9)
+		margin-top: 170px
+
+@media (min-width: $notMobileBkpt) and (max-width: $smallScreenBkpt)
+	nav
+		+span-columns(10)
+		+shift(1)
+
+@media (min-width: $notMobileBkpt)
+	nav.mobile, #MobileMenuButton
+		display: none
+
+@media (max-width: $mobileBkpt)
+	nav.desktop
+		display: none
+	nav.mobile
+		display: flex
+		width: 100%
+		flex-direction: column
+	p#greeting
+		display: none
+
+nav
+	&.desktop
+		a
+			display: inline-block
+	a
+		text-decoration: none
+		font: inherit
+		font-size: 1.2em
+		color: $medGrayText
+		&:hover
+			color: $mainOrange
+		.nav-link
+			text-align: center
+			padding: 0 20px
+			span
+				display: block
+				padding: 5px
+			.underline
+				background-image: url("/static/blogweb/img/underline.png")
+				height: 6px
+				width: 100%
+		&.active
+			.underline
+				background-image: url("/static/blogweb/img/underline-highlight.png")
+
+	&.mobile
+		position: fixed
+		z-index: 0
+		top: 0
+		bottom: 0
+
+.desktop-nav
+	padding-top: 30px
+
+.mobile-nav
+	#MobileMenuButton
+		position: fixed
+		right: 10px
+		top: 10px
+		z-index: 2
+		cursor: pointer
+		height: 32px
+		width: 32px
+		i
+			position: absolute
+			top: 0
+			left: 0
+			bottom: 0
+			right: 0
+			text-align: center
+			transition: opacity 500ms linear
+			&.fa-close
+				opacity: 0
+
+	nav
+		background-color: #eee
+		a
+			margin-top: 30px

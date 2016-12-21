@@ -8,6 +8,7 @@ class Blog(models.Model):
     class Meta:
         db_table = "blogs_blog"
 
+    # class constants
     HOME = 1
     SERVICES = 2
     PORTFOLIO = 3
@@ -40,6 +41,10 @@ class Blog(models.Model):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
 class ContentType(models.Model):
+    # class constants
+    TEXT_TYPE = "TEXT"
+    IMAGE_TYPE = "IMAGE"
+
     type_name = models.CharField(max_length=50)
     class Meta:
         db_table = "blogs_content_type"
@@ -56,6 +61,14 @@ class Content(models.Model):
     content_order = models.PositiveIntegerField(null=True)
     file_extension = models.CharField(max_length=10, null=True)
     created_date = models.DateTimeField()
+
+    @property
+    def is_text(self):
+        return self.content_type.type_name == ContentType.TEXT_TYPE
+
+    @property
+    def is_image(self):
+        return self.content_type.type_name == ContentType.IMAGE_TYPE
 
 class Comment(models.Model):
     class Meta:

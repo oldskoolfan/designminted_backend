@@ -1,0 +1,118 @@
+h1
+	font-weight: normal
+	margin-top: 0
+
+body
+	margin: 0
+	+outer-container
+	background-color: $bkgdGray
+	font: 1em "Aleo"
+	color: $darkGrayText
+	a
+		+link-reset
+
+.admin-link
+	//float: right
+	text-decoration: none
+	&:nth-of-type(2)
+		margin-left: 10px
+
+@media (min-width: $notMobileBkpt) and (max-width: $desktopBkpt)
+	body
+		min-width: $desktopBkpt
+
+.logo
+	//+span-columns(3)
+	margin: 0 auto
+	background-image: url("/static/blogweb/img/logo_2.png")
+	height: 250px
+	width: 250px
+	background-size: contain
+	background-repeat: no-repeat
+
+main
+	p
+		line-height: 1.5em
+
+aside
+	text-align: center
+	padding-top: 50px
+	img
+		//transform: rotate(90deg);
+		height: 350px
+		display: block
+		+add-border($style: outset, $width: 3px, $radius: 3px)
+
+@media (min-width: $notMobileBkpt)
+	section
+		&:not(#NavSection)
+			min-height: 333px
+		margin-top: 30px
+		+outer-container
+	div.admin
+		position: absolute
+		top: 20px
+		right: 20px
+
+@media (min-width: $wideScreenBkpt)
+	.logo
+		+span-columns(3)
+	section
+		aside
+			+span-columns(4)
+		main
+			+span-columns(8)
+
+@media (max-width: $smallScreenBkpt)
+	section
+		aside
+			display: none
+
+@media (min-width: $notMobileBkpt) and (max-width: $smallScreenBkpt)
+	section:not(#NavSection)
+		margin-left: 60px
+		margin-right: 60px
+		padding-right: 30px
+
+@media (max-width: $mobileBkpt)
+	html.nav-visible
+		.desktop-nav, main, #Footer
+			left: 100%
+		#MobileMenuButton
+			i.fa-navicon
+				opacity: 0
+			i.fa-close
+				opacity: 1
+	body > .ember-view
+		overflow: hidden
+		position: relative
+	.mobile-nav
+		div.admin
+			padding: 30px 0
+			width: 100%
+			text-align: center
+	.desktop-nav, main, #Footer
+		position: relative
+		z-index: 1
+		background-color: $bkgdGray
+		left: 0
+		transition: left 500ms
+		.admin-link
+			display: none
+
+	main
+		padding: 15px
+		min-height: 300px
+	.logo
+		margin-top: 30px
+		height: 150px
+		width: 150px
+
+	
+
+
+
+
+
+
+

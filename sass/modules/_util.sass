@@ -1,0 +1,11 @@
+=add-border($sides:(top, right, bottom, left), $width: 1px, $style: solid, $color: $border, $radius: null)
+	@each $side in $sides
+		border-#{$side}-width: $width
+		border-#{$side}-style: $style
+		border-#{$side}-color: $color
+	@if $radius != null
+		+add-radius($rad: $radius)
+
+=add-radius($sides:(top-left, top-right, bottom-left, bottom-right), $rad: 3px)
+	@each $side in $sides
+		border-#{$side}-radius: $rad
