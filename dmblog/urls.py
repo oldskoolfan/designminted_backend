@@ -15,24 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from rest_framework import routers
 from blogapi import views
 from blogadmin.views import *
 from blogweb.views import *
 
-# router = routers.DefaultRouter(trailing_slash=False)
-# router.register(r'users', views.UserViewSet)
-# router.register(r'groups', views.GroupViewSet)
-# router.register(r'blogs', views.BlogViewSet)
-# router.register(r'comments', views.CommentViewSet)
-# router.register(r'content-types', views.ContentTypeViewSet)
-# router.register(r'contents', views.ContentViewSet)
-# router.register(r'contactFormMessages', views.ContactFormMessageViewSet)
-
 urlpatterns = [
-    # url(r'^', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'update-comment-approval/(?P<id>[0-9]+)', views.UpdateCommentApprovalView.as_view()),
 
     # public site
     url(r'^$', HomeView.as_view(), name="index"),
@@ -42,6 +30,7 @@ urlpatterns = [
     url('contact/', ContactView.as_view(), name="contact"),
     url('testimonials/', TestimonialsView.as_view(), name="testimonials"),
     url(r'^blog/', BlogPageView.as_view(), name="blog"),
+    url('thank-you/', ThankYouView.as_view(), name="thankyou"),
 
     # admin stuff
     url(r'^admin/blogs/', BlogsView.as_view()),

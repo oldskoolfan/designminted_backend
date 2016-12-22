@@ -1,3 +1,6 @@
+html, body
+	height: 100%
+
 h1
 	font-weight: normal
 	margin-top: 0
@@ -10,6 +13,12 @@ body
 	color: $darkGrayText
 	a
 		+link-reset
+
+body > .wrapper
+	overflow: hidden
+	position: relative
+	min-height: 100%
+	padding-bottom: 50px
 
 .admin-link
 	//float: right
@@ -83,9 +92,6 @@ aside
 				opacity: 0
 			i.fa-close
 				opacity: 1
-	body > .ember-view
-		overflow: hidden
-		position: relative
 	.mobile-nav
 		div.admin
 			padding: 30px 0
@@ -100,9 +106,16 @@ aside
 		.admin-link
 			display: none
 
-	main
-		padding: 15px
-		min-height: 300px
+	.wrapper
+		display: flex
+		flex-direction: column
+		section
+			flex-grow: 1
+			display: flex
+			flex-direction: column
+		main
+			padding: 15px
+			flex-grow: 1
 	.logo
 		margin-top: 30px
 		height: 150px

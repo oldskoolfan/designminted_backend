@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.core.mail import EmailMessage
+from django.http import HttpResponseRedirect
 from blogapi.models import *
+from forms import ContactForm
 
 # Create your views here.
 
@@ -34,9 +37,31 @@ class PortfolioView(PublicBaseView):
     page_type = Blog.PORTFOLIO
     template_name = "portfolio.html"
 
+class ThankYouView(TemplateView):
+    template_name = "thanks.html"
+
 class ContactView(TemplateView):
     template_name = "contact.html"
-
+    def get(self, request, *args, **kwargs):
+        context = { "form": ContactForm() }
+        return render(request, self.template_name, context)
+    def post(self, request, **kwargs):
+        form = ContactForm(request.POST)
+        context = { "form": form }
+        if form.is_valid():
+            msg = form.save()
+            subject = "Contact Form Submission"
+            toAddr = "harris.1305@gmail.com"
+            email = EmailMessage(
+                subject,
+                msg.message,
+                msg.email,
+                [toAddr],
+                reply_to=[msg.email],
+            )
+            email.send()
+            return HttpResponseRedirect('/thank-you/')
+        return render(request, self.template_name, context)
 class TestimonialsView(PublicBaseView):
     page_type = Blog.TESTIMONIALS
     template_name = "testimonials.html"

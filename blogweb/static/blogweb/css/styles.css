@@ -4,7 +4,7 @@ html {
 *, *::after, *::before {
   box-sizing: inherit; }
 
-button, input[type=button], input[type=submit], input[type=text], input[type=password], textarea, #Admin .form-row input[type=text], #Admin .form-row textarea, #Admin .form-row select, #Admin input[type=button] {
+button, input[type=button], input[type=submit], input[type=text], input[type=password], input[type=email], textarea, #Admin .form-row input[type=text], #Admin .form-row textarea, #Admin .form-row select, #Admin input[type=button] {
   height: 40px;
   font: inherit;
   border-style: none;
@@ -19,6 +19,9 @@ button, input[type=button], input[type=submit], input[type=text], input[type=pas
       width: 90px; }
     #NewUserForm .form-row button:not(:last-of-type), #LoginForm .form-row button:not(:last-of-type) {
       margin-right: 10px; }
+
+html, body {
+  height: 100%; }
 
 h1 {
   font-weight: normal;
@@ -42,6 +45,12 @@ body {
     body a:hover {
       color: #E09B5E;
       cursor: pointer; }
+
+body > .wrapper {
+  overflow: hidden;
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 50px; }
 
 .admin-link {
   text-decoration: none; }
@@ -141,10 +150,6 @@ aside {
   html.nav-visible #MobileMenuButton i.fa-close {
     opacity: 1; }
 
-  body > .ember-view {
-    overflow: hidden;
-    position: relative; }
-
   .mobile-nav div.admin {
     padding: 30px 0;
     width: 100%;
@@ -159,9 +164,16 @@ aside {
     .desktop-nav .admin-link, main .admin-link, #Footer .admin-link {
       display: none; }
 
-  main {
-    padding: 15px;
-    min-height: 300px; }
+  .wrapper {
+    display: flex;
+    flex-direction: column; }
+    .wrapper section {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column; }
+    .wrapper main {
+      padding: 15px;
+      flex-grow: 1; }
 
   .logo {
     margin-top: 30px;
@@ -180,7 +192,7 @@ button, input[type=button], input[type=submit] {
   button:hover, input[type=button]:hover, input[type=submit]:hover {
     background-color: #E09B5E; }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
   width: auto;
   padding: 0 10px;
   border-top-width: 1px;
@@ -204,7 +216,6 @@ textarea {
   width: auto;
   height: 200px;
   padding: 10px;
-  resize: none;
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: #CCC;
@@ -221,6 +232,9 @@ textarea {
   border-top-right-radius: 3px;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px; }
+
+.text-center {
+  text-align: center; }
 
 @media (min-width: 1230px) {
   nav {
@@ -330,10 +344,15 @@ nav.mobile {
     margin: 5px 0;
     display: block; } }
 #Footer {
-  position: relative;
-  padding: 80px 0 40px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  line-height: 50px;
   text-align: center;
-  font-size: 0.8em; }
+  font-size: 0.8em;
+  padding: 0 15px; }
 
 #Admin.new .edit-form {
   display: none; }
@@ -414,7 +433,6 @@ nav.mobile {
     width: 350px;
     height: 200px;
     padding: 10px;
-    resize: none;
     border-top-width: 1px;
     border-top-style: solid;
     border-top-color: #CCC;
@@ -489,47 +507,11 @@ nav.mobile {
   #Admin input[type=button]:hover {
     background-color: #E09B5E; }
 
-section.contact::after {
-  clear: both;
-  content: "";
-  display: table; }
-section.contact div {
-  float: left;
-  display: block;
-  margin-right: 3.57866%;
-  width: 100%;
-  margin-bottom: 20px; }
-  section.contact div:last-child {
-    margin-right: 0; }
-  section.contact div button:first-of-type {
-    margin-right: 10px; }
-section.contact label {
-  float: left;
-  display: block;
-  margin-right: 3.57866%;
-  width: 22.316%;
-  text-align: right; }
-  section.contact label:last-child {
-    margin-right: 0; }
-section.contact input[type=text], section.contact textarea {
-  float: left;
-  display: block;
-  margin-right: 3.57866%;
-  width: 48.21067%; }
-  section.contact input[type=text]:last-child, section.contact textarea:last-child {
-    margin-right: 0; }
+section.contact table input {
+  width: 100%; }
+section.contact form div input[type=button] {
+  margin-right: 10px; }
 
-@media (max-width: 599px) {
-  section.contact input[type=text], section.contact textarea {
-    float: left;
-    display: block;
-    margin-right: 3.57866%;
-    width: 74.10533%; }
-    section.contact input[type=text]:last-child, section.contact textarea:last-child {
-      margin-right: 0; }
-  section.contact div:last-of-type {
-    display: flex;
-    justify-content: center; } }
 li {
   margin: 10px 0; }
 

@@ -1,0 +1,50 @@
+<div class="mobile-nav">
+    <div id="MobileMenuButton">
+        <i class="fa fa-navicon fa-2x" onclick="toggleNav()"></i>
+        <i class="fa fa-close fa-2x" onclick="toggleNav()"></i>
+    </div>
+    <nav class="mobile">
+        <a href="{% url "index" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Home</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "about" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>About</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "services" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Services</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "portfolio" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Portfolio</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "blog" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Blog</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "contact" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Contact</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+        <a href="{% url "testimonials" %}">
+        <div class="nav-link" onclick="toggleNav()">
+            <span>Testimonials</span>
+            <div class="underline"></div>
+        </div>
+        </a>
+    </nav>
+</div>

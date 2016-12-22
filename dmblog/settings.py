@@ -146,15 +146,13 @@ STATIC_URL = '/static/'
 if not DEBUG:
     STATIC_ROOT = "{}/public/static/".format(WEBROOT_DIR)
 
-#APPEND_SLASH = True
-
 # email settings
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "harris.1305.autobot@gmail.com"
+EMAIL_HOST = "mail.andrewfharris.com"
+EMAIL_HOST_USER = "autobot@andrewfharris.com"
 with open(ETC_DIR + "/email_pass.txt") as f:
     EMAIL_HOST_PASSWORD = f.read().strip()
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 
 
