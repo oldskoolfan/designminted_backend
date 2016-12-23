@@ -6,6 +6,6 @@ class ContactForm(forms.ModelForm):
         model = ContactFormMessage
         fields = [ 'firstname', 'lastname', 'email', 'message' ]
         widgets = {
-            'message': forms.Textarea(attrs = { 'cols': 20 }),
-            'email': forms.EmailInput,
+            'message': forms.Textarea(),
+            'email': forms.EmailInput(),
         }

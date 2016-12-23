@@ -182,7 +182,7 @@ aside {
 button, input[type=button], input[type=submit] {
   width: auto;
   background-color: #6B6B6B;
-  font-family: Helvetica;
+  font-family: Helvetica, sans-serif;
   font-weight: 300;
   line-height: 20px;
   letter-spacing: 4px;
@@ -497,7 +497,7 @@ nav.mobile {
 #Admin input[type=button] {
   width: auto;
   background-color: #6B6B6B;
-  font-family: Helvetica;
+  font-family: Helvetica, sans-serif;
   font-weight: 300;
   line-height: 20px;
   letter-spacing: 4px;
@@ -507,10 +507,16 @@ nav.mobile {
   #Admin input[type=button]:hover {
     background-color: #E09B5E; }
 
-section.contact table input {
+section.contact form {
   width: 100%; }
-section.contact form div input[type=button] {
-  margin-right: 10px; }
+  section.contact form table {
+    width: 100%; }
+    section.contact form table input, section.contact form table textarea {
+      width: 100%; }
+    section.contact form table tr:last-child th {
+      vertical-align: top; }
+  section.contact form div input[type=button] {
+    margin-right: 10px; }
 
 li {
   margin: 10px 0; }

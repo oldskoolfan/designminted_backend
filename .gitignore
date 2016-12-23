@@ -2,4 +2,4 @@
 .sass-cache
 src/
 *.pyc
-dmblogapi/settings.py
+dmblog/settings.py
