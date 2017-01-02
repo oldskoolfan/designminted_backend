@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from blogapi import views
 from blogadmin.views import *
 from blogweb.views import *
 
@@ -40,7 +39,5 @@ urlpatterns = [
     url(r'^admin/pages/', PagesView.as_view()),
 
     # misc
-    url(r'get-img/(?P<id>[0-9]+)', views.ImageView.as_view()),
-    url(r'create-user/', views.NewUserView.as_view()),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    url(r'get-img/(?P<id>[0-9]+)', GetImageView.as_view()),
 ]

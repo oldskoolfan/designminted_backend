@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.core.mail import EmailMessage
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from blogapi.models import *
 from forms import ContactForm
+from django.views.decorators.gzip import gzip_page
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
@@ -62,6 +64,13 @@ class ContactView(TemplateView):
             email.send()
             return HttpResponseRedirect('/thank-you/')
         return render(request, self.template_name, context)
+
 class TestimonialsView(PublicBaseView):
     page_type = Blog.TESTIMONIALS
     template_name = "testimonials.html"
+
+class GetImageView(View):
+    @method_decorator(gzip_page)
+    def get(self, request, *args, **kwargs):
+        content = Content.objects.get(pk=kwargs['id'])
+        return HttpResponse(content.content_data, content_type=content.file_extension)
