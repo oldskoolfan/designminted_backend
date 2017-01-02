@@ -3,7 +3,7 @@ import os, socket
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ETC_DIR = os.path.expanduser("~/etc")
-WEBROOT_DIR = os.path.expanduser("~/api.designminted.com")
+WEBROOT_DIR = os.path.expanduser("~/designminted.com")
 DEBUG_HOST = "andrew-mbp.lan"
 
 
