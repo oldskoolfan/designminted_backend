@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 import datetime
 from django.utils import timezone
-
+from inflector.languages.base import Base
+from inflection import dasherize
 
 class Blog(models.Model):
     class Meta:
@@ -34,6 +35,13 @@ class Blog(models.Model):
     @property
     def has_comments(self):
         return self.comments.count() > 0
+
+    @property
+    def guid(self):
+        inflector = Base()
+        title = dasherize(inflector.urlize(unicode(self.blog_title)))
+        guid = "http://designminted.com/blog/{0}/{1}/".format(self.id, title)
+        return guid
 
     def __str__(self):
         return self.blog_title
