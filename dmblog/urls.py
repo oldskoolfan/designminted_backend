@@ -28,7 +28,8 @@ urlpatterns = [
     url('portfolio/', PortfolioView.as_view(), name="portfolio"),
     url('contact/', ContactView.as_view(), name="contact"),
     url('testimonials/', TestimonialsView.as_view(), name="testimonials"),
-    url(r'^blog/', BlogPageView.as_view(), name="blog"),
+    url(r'^blog/$', BlogPageView.as_view(), name="blog"),
+    url(r'^blog/(?P<id>[0-9]+)/(?P<title>[a-z\-]+)/$', BlogPageView.as_view()),
     url('thank-you/', ThankYouView.as_view(), name="thankyou"),
 
     # admin stuff
@@ -40,4 +41,7 @@ urlpatterns = [
 
     # misc
     url(r'get-img/(?P<id>[0-9]+)', GetImageView.as_view()),
+
+    # rss
+    url('rss/', RssFeedView.as_view(), name="rss"),
 ]

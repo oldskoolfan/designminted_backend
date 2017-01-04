@@ -104,7 +104,7 @@ class BlogBaseView(AdminBaseView):
                         'content_type': imageType,
                         'content_data': data,
                         'file_extension': ext,
-                        'created_date': datetime.now(),
+                        'created_date': datetime.datetime.now(),
                         'content_order': self.getItemFromList(orderList, itemCounter),
                         'content_caption': self.getItemFromList(captionList, imgTypeCounter)
                     }
@@ -127,7 +127,7 @@ class BlogBaseView(AdminBaseView):
                     defaults = {
                         'content_type': textType,
                         'content_text': text,
-                        'created_date': datetime.now(),
+                        'created_date': datetime.datetime.now(),
                         'content_order': self.getItemFromList(orderList, itemCounter),
                     }
                 )
@@ -194,7 +194,7 @@ class AddNewBlogView(BlogBaseView):
         contentIds = request.POST.getlist('contentid')
         blog = Blog(
             blog_title = request.POST['title'],
-            pub_date = datetime.now(),
+            pub_date = datetime.datetime.now(),
             user = request.user
         )
         blog.save()

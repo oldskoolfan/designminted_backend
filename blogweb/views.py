@@ -6,6 +6,8 @@ from blogapi.models import *
 from forms import ContactForm
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
+import PyRSS2Gen
+import datetime
 
 # Create your views here.
 
@@ -31,7 +33,10 @@ class AboutView(PublicBaseView):
 class BlogPageView(TemplateView):
     template_name = "blog.html"
     def get(self, request, *args, **kwargs):
-        blogs = Blog.objects.filter(page_type=Blog.BLOG)
+        if 'id' in kwargs:
+            blogs = [Blog.objects.get(pk=kwargs['id'])]
+        else:
+            blogs = Blog.objects.filter(page_type=Blog.BLOG).order_by('-pub_date')
         context = { "blogs": blogs }
         return render(request, self.template_name, context)
 
@@ -74,3 +79,36 @@ class GetImageView(View):
     def get(self, request, *args, **kwargs):
         content = Content.objects.get(pk=kwargs['id'])
         return HttpResponse(content.content_data, content_type=content.file_extension)
+
+class RssFeedView(View):
+    def get(self, request):
+        items = []
+        blogs = Blog.objects.filter(page_type=Blog.BLOG).order_by('-pub_date')
+
+        imageType = ContentType.objects.filter(type_name=ContentType.IMAGE_TYPE).first()
+        for blog in blogs:
+            img = blog.contents.filter(content_type_id=imageType.id).first()
+            item = PyRSS2Gen.RSSItem(
+                title = blog.blog_title,
+                link = blog.guid,
+                author = "maria@designminted.com (Maria)",
+                pubDate = blog.pub_date,
+                guid = PyRSS2Gen.Guid(blog.guid),
+            )
+            if img != None:
+                item.enclosure = PyRSS2Gen.Enclosure(
+                    url = "http://designminted.com/get-img/{0}/".format(img.id),
+                    length = len(img.content_data),
+                    type = img.file_extension,
+                )
+            items.append(item)
+
+        rss = PyRSS2Gen.RSS2(
+            title = "Design Minted, LLC",
+            link = "http://designminted.com",
+            description = "Maria from Design Minted, LLC's interior decorating blog",
+            lastBuildDate = datetime.datetime.now(),
+            items = items
+        )
+
+        return HttpResponse(rss.to_xml(), content_type="application/rss+xml")
