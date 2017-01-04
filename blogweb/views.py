@@ -6,6 +6,7 @@ from blogapi.models import *
 from forms import ContactForm
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
+from django.conf import settings
 import PyRSS2Gen
 import MyRSS2
 import datetime
@@ -59,7 +60,7 @@ class ContactView(TemplateView):
         if form.is_valid():
             msg = form.save()
             subject = "Contact Form Submission"
-            toAddr = "harris.1305@gmail.com"
+            toAddr = "harris.1305@gmail.com" if settings.DEBUG else "maria@designminted.com"
             email = EmailMessage(
                 subject,
                 msg.message,
