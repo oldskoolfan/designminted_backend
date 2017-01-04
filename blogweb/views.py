@@ -7,6 +7,7 @@ from forms import ContactForm
 from django.views.decorators.gzip import gzip_page
 from django.utils.decorators import method_decorator
 import PyRSS2Gen
+import MyRSS2
 import datetime
 
 # Create your views here.
@@ -103,12 +104,14 @@ class RssFeedView(View):
                 )
             items.append(item)
 
-        rss = PyRSS2Gen.RSS2(
+        rss = MyRSS2.MyRSS2(
             title = "Design Minted, LLC",
             link = "http://designminted.com",
             description = "Maria from Design Minted, LLC's interior decorating blog",
             lastBuildDate = datetime.datetime.now(),
-            items = items
+            items = items,
         )
+
+        rss.rss_attrs['xmlns:atom'] = "http://www.w3.org/2005/Atom"
 
         return HttpResponse(rss.to_xml(), content_type="application/rss+xml")
