@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 from blogapi.models import *
-from datetime import datetime
+import datetime
 
 # Create your views here.
 
