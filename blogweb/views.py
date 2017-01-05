@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 from django.core.mail import EmailMessage
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from blogapi.models import *
 from forms import ContactForm
 from django.views.decorators.gzip import gzip_page
@@ -64,11 +64,14 @@ class ContactView(TemplateView):
             email = EmailMessage(
                 subject,
                 msg.message,
-                msg.email,
+                'autobot@andrewfharris.com',
                 [toAddr],
                 reply_to=[msg.email],
             )
-            email.send()
+            try:
+                email.send()
+            except Exception as e:
+                raise
             return HttpResponseRedirect('/thank-you/')
         return render(request, self.template_name, context)
 
