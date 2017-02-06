@@ -3,37 +3,37 @@
 
     <section id="NavSection">
         <nav class="desktop">
-            <a href="{% url "about" %}">
+            <a href="{% url "about" %}" {% if request.path == "/about/" %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>About</span>
                 <div class="underline"></div>
             </div></a>
 
-            <a href="{% url "services" %}">
+            <a href="{% url "services" %}" {% if request.path == "/services/" %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>Services</span>
                 <div class="underline"></div>
             </div></a>
 
-            <a href="{% url "portfolio" %}">
+            <a href="{% url "portfolio" %}" {% if request.path == "/portfolio/" %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>Portfolio</span>
                 <div class="underline"></div>
             </div></a>
 
-            <a href="{% url "blog" %}">
+            <a href="{% url "blog" %}" {% if "/blog/" in request.path %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>Blog</span>
                 <div class="underline"></div>
             </div></a>
 
-            <a href="{% url "contact" %}">
+            <a href="{% url "contact" %}" {% if "/contact/" in request.path %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>Contact</span>
                 <div class="underline"></div>
             </div></a>
 
-            <a href="{% url "testimonials" %}">
+            <a href="{% url "testimonials" %}" {% if request.path == "/testimonials/" %}class="active"{% endif %}>
             <div class="nav-link">
                 <span>Testimonials</span>
                 <div class="underline"></div>
