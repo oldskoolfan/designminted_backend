@@ -1,21 +1,21 @@
 {% extends "base-page.html" %}
+
 {% block main_content %}
+<h1>Contact Me</h1>
+<p>Contact me via email for inqueries or estimates at
+    <a href="mailto:maria@designminted.com">maria@designminted.com</a>
+</p>
+<p>Or send me a note here:</p>
 <section class="contact">
-	<h1>Contact Me</h1>
-	<p>Contact me via email for inqueries or estimates at
-		<a href="mailto:maria@designminted.com">maria@designminted.com</a>
-	</p>
-	<p>Or send me a note here:</p>
     <form action="" method="post">
         {% csrf_token %}
         <table>
         {{ form.as_table }}
         </table>
         <div>
-            <input onclick="clearContactForm()" type="button" value="Cancel">
-            <input type="submit" value="Submit">
+            <button onclick="clearContactForm()" type="button">Cancel</button>
+            <button type="submit">Submit</button>
         </div>
     </form>
 </section>
-
 {% endblock %}
