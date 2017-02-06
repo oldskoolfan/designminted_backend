@@ -1,5 +1,8 @@
-{% load blog_extras %}
+{% load blog_extras staticfiles %}
 <br><br>
 <footer>Copyright {% get_copyright %} by Andrew F Harris</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+<script src="{% static "blogadmin/js/main.js" %}"></script>
 </body>
 </html>
