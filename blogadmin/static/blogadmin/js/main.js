@@ -1,6 +1,74 @@
 /* main.js */
 
 var tinymceOptions = {
+    image_title: true,
+
+    // NOTE: see https://www.tinymce.com/docs/demo/file-picker/
+    file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+
+        // Note: In modern browsers input[type="file"] is functional without
+        // even adding it to the DOM, but that might not be the case in some older
+        // or quirky browsers like IE, so you might want to add it to the DOM
+        // just in case, and visually hide it. And do not forget do remove it
+        // once you do not need it anymore.
+
+        input.onchange = function() {
+          var file = this.files[0];
+
+          // Note: Now we need to register the blob in TinyMCEs image blob
+          // registry. In the next release this part hopefully won't be
+          // necessary, as we are looking to handle it internally.
+          var id = 'blobid' + (new Date()).getTime();
+          var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+          var blobInfo = blobCache.create(id, file);
+          blobCache.add(blobInfo);
+
+          // call the callback and populate the Title field with the file name
+          cb(blobInfo.blobUri(), { title: file.name });
+        };
+
+        input.click();
+    },
+    // NOTE: see https://www.tinymce.com/docs/configure/file-image-upload/
+    images_upload_handler: function (blobInfo, success, failure) {
+        var xhr,
+            formData,
+            tokenVal = $('input[name=csrfmiddlewaretoken]').val();
+
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open('POST', '/admin/upload/');
+
+        xhr.onload = function() {
+          var json;
+
+          if (xhr.status != 200) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+          }
+
+          json = JSON.parse(xhr.responseText);
+
+          if (!json || typeof json.location != 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+          }
+
+          success(json.location);
+        };
+
+        formData = new FormData();
+        formData.append('image_upload', blobInfo.blob(), blobInfo.filename());
+
+        xhr.setRequestHeader('X-CSRFToken', tokenVal);
+        xhr.send(formData);
+    },
+    file_picker_types: 'file image media',
+    automatic_uploads: true,
+    image_dimensions: false,
     selector: 'textarea',
     height: 300,
     plugins: [
@@ -42,7 +110,10 @@ function removeContent(el, contentId) {
         el = el.target != null && typeof el == "object" ? el.target : el;
         var $content = $(el).closest('.blog-content'),
             $formRow = $(el).closest('.form-row'),
-            type = $formRow.data('type');
+            type = $formRow.data('type'),
+            callback = function(data) {
+                console.debug(data);
+            };
 
         if (type == window.contentTypes.TEXT) {
             tinymce.remove();
@@ -52,9 +123,9 @@ function removeContent(el, contentId) {
         $content.find($formRow).remove();
 
         if (contentId != null) {
-            var url = '/contents/' + contentId,
+            var url = '/admin/delete-content/' + contentId,
                 verb = 'delete';
-            makeAjaxCall(url, verb, null, null);
+            makeAjaxCall(url, verb, null, callback);
         }
 
         adjustPositions();

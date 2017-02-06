@@ -22,10 +22,12 @@ urlpatterns = [
     url(r'^admin/delete-blog/(?P<id>[0-9]+)', DeleteBlogView.as_view()),
     url(r'^admin/edit-blog/(?P<id>[0-9]+)', EditBlogView.as_view()),
     url(r'^admin/new-blog/', AddNewBlogView.as_view()),
+    url(r'^admin/delete-content/(?P<id>[0-9]+)', DeleteContentView.as_view()),
     url(r'^admin/pages/', PagesView.as_view()),
 
     # misc
     url(r'get-img/(?P<id>[0-9]+)', GetImageView.as_view()),
+    url(r'^admin/upload/', UploadImageView.as_view()),
 
     # rss
     url('rss/', RssFeedView.as_view(), name="rss"),

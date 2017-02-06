@@ -1,1 +1,27 @@
-{% extends "base-page.html" %}
+{% include "header.html" %}
+{% include "desktop-nav.html" %}
+{% include "mobile-nav.html" %}
+    <section class="main">
+        <div class="owl-carousel owl-theme">
+            {% load staticfiles %}
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_3558.JPG" %}">
+            </div>
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_3689.JPG" %}">
+            </div>
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_3939.JPG" %}">
+            </div>
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_4308.JPG" %}">
+            </div>
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_4312.JPG" %}">
+            </div>
+            <div class="item">
+                <img src="{% static "blogweb/img/carousel/IMG_6674.JPG" %}">
+            </div>
+        </div>
+    </section>
+{% include "footer.html" %}

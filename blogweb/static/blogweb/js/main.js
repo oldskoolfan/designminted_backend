@@ -20,3 +20,14 @@ function toggleNav() {
     var html = document.getElementsByTagName('html')[0];
     html.classList.toggle('nav-visible');
 }
+
+// jquery doc ready
+$(document).ready(function(){
+  $(".owl-carousel").owlCarousel({
+      // items: 1,
+      // autoplay: true,
+      // loop: true,
+      margin: 10,
+      nav: true
+  });
+});

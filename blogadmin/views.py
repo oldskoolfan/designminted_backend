@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 from blogapi.models import *
@@ -51,6 +51,12 @@ class DeleteBlogView(View):
         if blog != None: blog.delete()
         return HttpResponseRedirect('/admin/blogs/')
 
+class DeleteContentView(View):
+    def delete(self, request, *args, **kwargs):
+        id = kwargs['id']
+        content = Content.objects.get(pk=id)
+        if content != None: content.delete()
+        return JsonResponse({'id': content.id})
 
 class BlogBaseView(AdminBaseView):
     def getItemFromList(self, list, index):

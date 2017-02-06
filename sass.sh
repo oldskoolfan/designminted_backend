@@ -4,7 +4,11 @@ cd /Users/andrew/PycharmProjects/dmblogapi
 
 echo "compiling sass..."
 
-sass blogwebapp/static/blogwebapi/sass/main.sass blogwebapp/static/blogwebapi/css/styles.css
+if [ $1 == 'watch' ]; then
+    sass --watch sass:blogweb/static/blogweb/css
+else
+    sass sass/app.sass blogweb/static/blogweb/css/app.css
+fi
 
 echo "...done!"
 exit 0
