@@ -7,3 +7,4 @@ six==1.10.0
 wsgiref==0.1.2
 Inflector==2.0.11
 PyRSS2Gen==1.1
+Pillow==4.0.0
